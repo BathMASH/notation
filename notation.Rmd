@@ -105,11 +105,11 @@ Commas and dots might also be used for separating groups of a thousand
 
 ```{=tex}
 \begin{array}{c|c|c}
-\textbf{function} & f(x)= x^2    & y= x^2 & y = x^2 & u^2 & s = t^2 & v = z^2 & f(x) = x^2 \\
+\textbf{function} & f(x)= x^2    & y= x^2 & y = x^2 & u^2 & v = z^2 & s = t^2 & f(x) = x^2 \\
  & \color{orange}{\downarrow} & \color{blue}{\downarrow} & \color{green}{\downarrow} & \color{red}{\downarrow} & \color{purple}{\downarrow} & \color{olive}{\downarrow} & \color{pink}{\downarrow} \\
-\textbf{differential} & f'(x)= 2x   & \frac{dy}{dx}=2x &   y' = 2x & \frac{d(u^2)}{du}=2u & \frac{d}{dt}s = 2t & \dot{v} = 2z  & D(f) = 2x \\
+\textbf{differential} & f'(x)= 2x   & \frac{dy}{dx}=2x &   y' = 2x & \frac{d(u^2)}{du}=2u & \frac{d}{dz}v = 2z & \dot{s} = 2t  & D(f) = 2x \\
  & \color{orange}{\downarrow} & \color{blue}{\downarrow} & \color{green}{\downarrow} & \color{red}{\downarrow} & \color{purple}{\downarrow} & \color{olive}{\downarrow} & \color{pink}{\downarrow}\\
-\textbf{second differential} & f''(x) = 2 & \frac{d^2y}{dx^2}=2 & y'' = 2 & \frac{d^2(u^2)}{du^2}=2 & \frac{d^2}{dt^2}s = 2 & \ddot{v} = 2 & D^2(f) = 2
+\textbf{second differential} & f''(x) = 2 & \frac{d^2y}{dx^2}=2 & y'' = 2 & \frac{d^2(u^2)}{du^2}=2 & \frac{d^2}{dz^2}v = 2 & \ddot{s} = 2 & D^2(f) = 2
 
 \end{array}
 
