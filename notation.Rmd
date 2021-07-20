@@ -62,7 +62,7 @@ a \times b = a \cdot b = ab = a(b) = (a)b = (a)(b)
 
 Different cultures tend to use dots and commas in different ways, if you aren't sure please just ask your lecturer to clarify their notation.
 
-A decimal point may be shown in several ways.
+A decimal point may be shown in several ways:
 
 ```{=tex}
 \begin{array}{ll}
@@ -145,7 +145,7 @@ d(x,y)  & \text{"distance between x and y"} & \text{the distance function (metri
 
 In the expression $a^b$, $b$ can be called the 'power' the 'exponent' or the 'index' (indices is the plural of index).
 
-In the expression $e^b$, $e$ is a number that might be called the 'natural number' or 'Euler's number' (which is pronounced 'oy-luh'). 
+In the expression $e^b$, $e$ is a number that might be called 'Euler's number' (which is pronounced 'oy-luh'). 
 
 The expression $e^x$ is a function, and can also be written in function notation:
 
@@ -173,11 +173,12 @@ You can use a single letter to show a vector, or split it into its components.
 
 ```{=tex}
 \begin{array}{lllll}
-\vec{AB} & = \textbf{a} & = \underset{^\sim}{a} & = \vec{a} & = \hat{a} & = \underline{a}\\
+\vec{OA} & = \textbf{a} & = \underset{^\sim}{a} & = \vec{a}  & = \underline{a}\\
 = (a_1, a_2) & = (a_1 \space a_2) & =  \begin{pmatrix} a_1 \\ a_2 \end{pmatrix} & = \begin{bmatrix} a_1 \\ a_2 \end{bmatrix} &\\
 = a_1 \textbf{i} + a_2 \textbf{j} & = a_1 \hat{i} + a_2 \hat{j} &
 \end{array}
 ```
+$\hat{a}$ is usually reserved for the 'unit vector in the direction of $\vec{a}$'
 
 Watch out for pointy brackets though, as they are not used to show something is a vector, but for an operation involving two vectors (the inner product)
 
@@ -190,7 +191,7 @@ Watch out for pointy brackets though, as they are not used to show something is 
 
 ## Matrices
 
-Matrices are usually named with a letter, which is in written in bold font.  You can use curved or square brackets for a matrix, or sometimes even no bracket at all.
+Matrices are usually named with a letter, which is written in bold font.  You can use curved or square brackets for a matrix, or sometimes even no bracket at all.
 
 Another word for (curved) brackets is 'parentheses' and {curly} brackets are sometimes called 'braces'.
 
@@ -240,7 +241,7 @@ Curly brackets are not generally used for matrices, but because they are used fo
 
 ### Straight lines
 
-Straight vertical lines are used for the property of the matrix, rather than the matrix itself.  Watch out - some lecturers' handwriting makes it tricky to tell what style of line is intended!  If in doubt, just ask for clarification.
+Straight vertical lines are used for a property of the matrix, rather than the matrix itself.  Watch out - some lecturers' handwriting makes it tricky to tell what style of line is intended!  If in doubt, just ask for clarification.
 
 Single lines show the determinant of a matrix  (telling you something about the scale factor when using the matrix to enlarge a vector).
 
@@ -280,7 +281,7 @@ norm(\textbf{A}) =
 \end{equation}
 ```
 
-If you are working with numbers or vectors then single and double lines are often used interchangeably to mean 'distance from the origin'.
+If you are working with numbers or vectors then single and double lines are often used interchangeably to mean 'distance from the origin' or 'magnitude of the vector'.
 
 ```{=tex}
 \begin{equation}
@@ -302,7 +303,7 @@ For example
 
 X & \text{possible values obtained when rolling a dice} \\
 x & \text{the value after a single roll } \\
-X = \{x\} &  \text{the set of possibly values} \\
+X = \{x\} &  \text{the set of possible values} \\
 & = \{1,2,3,4,5,6\} \\
 x_1, x_2, x_3 & \text{the results obtained from three rolls of the dice} \\
 x_i & \text{the value of one of the rolls of the dice} \\
@@ -385,6 +386,7 @@ A' & \text{the complement of} A \\
 
 \sum & \text{sum of} \\
 \sum_{i=1}^{n} a_n & = a_1 + a_2 + ... + a_n\\
+\prod & \text{product of} \\
 \prod_{i=1}^{n} a_n & a_1 \times a_2 \times ... \times a_n \\
 n! & \text{n factorial} \\
  & =n \times (n-1) \times... x 2 x 1 \\
