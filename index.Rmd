@@ -110,7 +110,7 @@ Commas and dots might also be used for separating groups of a thousand
 \text{Differential (noun)} & \text{The change in the variable; the differential of $x$ is $dx$}\\
 \text{Derivative (noun)} & \frac{dy}{dx}  = \text{The rate of change of the function}\\
 \text{Differentiate (verb)} & \text{The act of finding the derivative; you differentiate the function $y$ to find $\frac{dy}{dx}$}\\
-\text{Derive (verb)} & \text{Red herring! Whilst this sounds like the verb form of derivative it isn't!  Use 'differentiate' instead.}
+\text{Derive (verb)} & \text{Red herring! Whilst this sounds like the verb form of derivative it isn't!  Use 'differentiate' instead}
 \end{array}
 ```
 
