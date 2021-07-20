@@ -101,15 +101,24 @@ Commas and dots might also be used for separating groups of a thousand
 
 ## Calculus
 
+### Maths grammar
+
+\Calculus - The name of the branch of maths that includes \colour{green}{differentiation}
+\colour{green}{Differentiation (noun)}- the process of finding the \color{blue}{derivative}
+\colour{red}{Differential (noun)} - the \textit{difference}; the change seen in the variable $x$ is \color{red}{$dx$}.
+\color{blue}{Derivative (noun)} - often thought of as the 'answer', this is rate of change (how much does $y$ change when $x$ changes by \color{red}{}$dx$}?), \colour{blue}{$\frac{dy}{dx}$}$
+\colour{purple}{Differentiate (verb)} - the act of finding the \color{blue}{derivative} ('you \colour{purple}{differentiated} the function to find \colour{blue}{$\frac{dy}{dx}$}')
+\color{black}{Derive (verb)} - \textit{red herring!}, not related to the word \color{blue}{derivative}, sometimes used in error as a synonym for '\color{purple}{differentiate}'
+
 ### Equivalent ways of showing differentiation
 
 ```{=tex}
 \begin{array}{c|c|c}
 \textbf{function} & f(x)= x^2    & y= x^2 & y = x^2 & u^2 & v = z^2 & s = t^2 & f(x) = x^2 \\
  & \color{orange}{\downarrow} & \color{blue}{\downarrow} & \color{green}{\downarrow} & \color{red}{\downarrow} & \color{purple}{\downarrow} & \color{olive}{\downarrow} & \color{pink}{\downarrow} \\
-\textbf{differential} & f'(x)= 2x   & \frac{dy}{dx}=2x &   y' = 2x & \frac{d(u^2)}{du}=2u & \frac{d}{dz}v = 2z & \dot{s} = 2t  & D(f) = 2x \\
+\textbf{derivative} & f'(x)= 2x   & \frac{dy}{dx}=2x &   y' = 2x & \frac{d(u^2)}{du}=2u & \frac{d}{dz}v = 2z & \dot{s} = 2t  & D(f) = 2x \\
  & \color{orange}{\downarrow} & \color{blue}{\downarrow} & \color{green}{\downarrow} & \color{red}{\downarrow} & \color{purple}{\downarrow} & \color{olive}{\downarrow} & \color{pink}{\downarrow}\\
-\textbf{second differential} & f''(x) = 2 & \frac{d^2y}{dx^2}=2 & y'' = 2 & \frac{d^2(u^2)}{du^2}=2 & \frac{d^2}{dz^2}v = 2 & \ddot{s} = 2 & D^2(f) = 2
+\textbf{second derivative} & f''(x) = 2 & \frac{d^2y}{dx^2}=2 & y'' = 2 & \frac{d^2(u^2)}{du^2}=2 & \frac{d^2}{dz^2}v = 2 & \ddot{s} = 2 & D^2(f) = 2
 
 \end{array}
 
