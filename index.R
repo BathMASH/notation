@@ -1,0 +1,409 @@
+---
+title: "Mathematical notation - help my lecturer is speaking a different language!"
+output:
+  html_document: default
+  pdf_document: default
+header-includes:
+- \usepackage{bbm}
+- \usepackage{undertilde}
+- \usepackage{accent}
+- \usepackage{tikz}
+- \usepackage{pgfplots}
+- \usepackage{DiagrammeR}
+editor_options:
+  markdown:
+    wrap: 72
+---
+```{r, include=FALSE}
+
+knitr::opts_chunk$set(
+  comment = "#>", echo = FALSE, fig.width = 6
+)
+
+```
+There are lots of different ways of writing maths that are equivalent and can be used interchangeably.  This can be confusing if your lecturer uses a different notation than you are used to.  
+
+The reason that there are different ways to say the same thing in maths is because mathematical notation has been developed over many thousands of years by many different people.  
+
+In English 'big' (from Middle English) and 'large' (from Latin) mean the same thing.   There are similar examples in maths.
+
+The most important thing to remember is that choice of notation is often cultural or simply personal preference, and therefore it is okay to ask for clarification.
+
+
+## Numbers and calculations
+
+### Division and multiplication
+
+Sometimes we think of $\frac{a}{b}$ as a 'fraction' and $a\div b$ as a 'calculation', but they are actually interchangeable.
+
+```{=tex}
+\begin{equation}
+
+\frac{2}{5} = 2\div 5 = 2/5  
+
+\end{equation}
+
+```
+
+When working with numbers we often use a multiplication sign $\times$, but this is usually dropped when working algebraically as it looks a bit like the letter x.
+
+If you are working with vectors then then it is important to distinguish between the cross product $a \times b$ and the dot product $a \cdot b$, but with scalars (e.g. straightforward numbers), they are interchangeable.
+
+
+```{=tex}
+\begin{equation}
+a \times b = a \cdot b = ab = a(b) = (a)b = (a)(b) 
+
+\end{equation}
+
+```
+
+### Dots and commas
+
+Different cultures tend to use dots and commas in different ways, if you aren't sure please just ask your lecturer to clarify their notation.
+
+A decimal point may be shown in several ways:
+
+```{=tex}
+\begin{array}{ll}
+
+2 \frac{3}{10} & = 2 \cdot 3 \\
+& = 2.3 \\
+& = 2,3
+
+\end{array}
+
+```
+
+but a dot can also be used as multiplication
+
+```{=tex}
+\begin{array}{ll}
+2 \times 3 & = 2 \cdot 3 \\
+& = 2.3 \\
+& = 2(3)
+\end{array}
+
+```
+
+Commas and dots might also be used for separating groups of a thousand
+
+```{=tex}
+\begin{array}{ll}
+
+2145600 & = 2 145 600 \\
+& = 2,145,600 \\
+& = 2.145.600 
+\end{array}
+
+```
+
+
+## Calculus
+
+### Maths grammar
+
+\Calculus - The name of the branch of maths that includes \colour{green}{differentiation}
+\colour{green}{Differentiation (noun)}- the process of finding the \color{blue}{derivative}
+\colour{red}{Differential (noun)} - the \textit{difference}; the change seen in the variable $x$ is \color{red}{$dx$}.
+\color{blue}{Derivative (noun)} - often thought of as the 'answer', this is rate of change (how much does $y$ change when $x$ changes by \color{red}{}$dx$}?), \colour{blue}{$\frac{dy}{dx}$}$
+\colour{purple}{Differentiate (verb)} - the act of finding the \color{blue}{derivative} ('you \colour{purple}{differentiated} the function to find \colour{blue}{$\frac{dy}{dx}$}')
+\color{black}{Derive (verb)} - \textit{red herring!}, not related to the word \color{blue}{derivative}, sometimes used in error as a synonym for '\color{purple}{differentiate}'
+
+### Equivalent ways of showing differentiation
+
+```{=tex}
+\begin{array}{c|c|c}
+\textbf{function} & f(x)= x^2    & y= x^2 & y = x^2 & u^2 & v = z^2 & s = t^2 & f(x) = x^2 \\
+ & \color{orange}{\downarrow} & \color{blue}{\downarrow} & \color{green}{\downarrow} & \color{red}{\downarrow} & \color{purple}{\downarrow} & \color{olive}{\downarrow} & \color{pink}{\downarrow} \\
+\textbf{derivative} & f'(x)= 2x   & \frac{dy}{dx}=2x &   y' = 2x & \frac{d(u^2)}{du}=2u & \frac{d}{dz}v = 2z & \dot{s} = 2t  & D(f) = 2x \\
+ & \color{orange}{\downarrow} & \color{blue}{\downarrow} & \color{green}{\downarrow} & \color{red}{\downarrow} & \color{purple}{\downarrow} & \color{olive}{\downarrow} & \color{pink}{\downarrow}\\
+\textbf{second derivative} & f''(x) = 2 & \frac{d^2y}{dx^2}=2 & y'' = 2 & \frac{d^2(u^2)}{du^2}=2 & \frac{d^2}{dz^2}v = 2 & \ddot{s} = 2 & D^2(f) = 2
+
+\end{array}
+
+
+```
+
+
+### Letters that look like d but mean different things
+
+
+```{=tex}
+\begin{array}{lll}
+\Delta{x} & \text{"delta x"} & \text{the change in x} \\
+\delta{x} & \text{"delta x"} & \text{the small change in x} \\
+d{x} & \text{"the differential"} & \text{the change in x when it approaches zero} \\
+\partial{x} &  \text{"the partial differential"} & \text{the change in x when it approcahes zero} \\
+d(x,y)  & \text{"distance between x and y"} & \text{the distance function (metric spaces and topology)}
+
+\end{array}
+```
+
+
+## Exponentials
+
+In the expression $a^b$, $b$ can be called the 'power' the 'exponent' or the 'index' (indices is the plural of index).
+
+In the expression $e^b$, $e$ is a number that might be called 'Euler's number' (which is pronounced 'oy-luh'). 
+
+The expression $e^x$ is a function, and can also be written in function notation:
+
+```{=tex}
+\begin{equation}
+e^x = \text{exp}(x) = \text{exp}x
+\end{equation}
+```
+
+The choice of notation might be used to emphasise that it is a function, or perhaps just to make it easier to read:
+
+```{=tex}
+\begin{equation}
+e^{\frac{2x^2}{3 - x}} = \text{exp}\big({\frac{2x^2}{3 - x}}\big)
+\end{equation}
+```
+
+## Vectors
+
+There are so many different notations that can be used for vectors, it can be very confusing.
+
+Vectors are often written in lowercase, and vertices are often uppercase.
+
+You can use a single letter to show a vector, or split it into its components.
+
+```{=tex}
+\begin{array}{lllll}
+\vec{OA} & = \textbf{a} & = \underset{^\sim}{a} & = \vec{a}  & = \underline{a}\\
+= (a_1, a_2) & = (a_1 \space a_2) & =  \begin{pmatrix} a_1 \\ a_2 \end{pmatrix} & = \begin{bmatrix} a_1 \\ a_2 \end{bmatrix} &\\
+= a_1 \textbf{i} + a_2 \textbf{j} & = a_1 \hat{i} + a_2 \hat{j} &
+\end{array}
+```
+$\hat{a}$ is usually reserved for the 'unit vector in the direction of $\vec{a}$'
+
+Watch out for pointy brackets though, as they are not used to show something is a vector, but for an operation involving two vectors (the inner product)
+
+```{=tex}
+\begin{array}{lll}
+\mathbf{a} = (a_1,a_2) & \mathbf{b} = (b_1,b_2) & \text{are vectors}\\
+\langle \mathbf{a}, \mathbf{b} \rangle && \text{is the inner product of the two vectors}
+\end{array}
+```
+
+## Matrices
+
+Matrices are usually named with a letter, which is written in bold font.  You can use curved or square brackets for a matrix, or sometimes even no bracket at all.
+
+Another word for (curved) brackets is 'parentheses' and {curly} brackets are sometimes called 'braces'.
+
+```{=tex}
+\begin{equation}
+\textbf{A} = 
+\begin{pmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9
+\end{pmatrix}
+= 
+\begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9
+\end{bmatrix}
+=
+\begin{matrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9
+\end{matrix}
+\end{equation}
+```
+
+As a general rule matrices are written with uppercase letters,$A$, and elements of a matrix are denoted with lower case $a$.  Each element of the matrix can be written with a subscript, $a_{ij}$, that tells you where it is located:
+
+```{=tex}
+\begin{equation}
+\textbf{A} = 
+\begin{pmatrix}
+a_{1,1} & a_{1,2} \\
+a_{2,1} & a_{2,2}
+\end{pmatrix}
+\end{equation}
+```
+
+
+Curly brackets are not generally used for matrices, but because they are used for set notation you could write a matrix using curly brackets:
+
+```{=tex}
+\begin{equation}
+\textbf{A} = \{a_{ij}\}
+\end{equation}
+```
+
+### Straight lines
+
+Straight vertical lines are used for a property of the matrix, rather than the matrix itself.  Watch out - some lecturers' handwriting makes it tricky to tell what style of line is intended!  If in doubt, just ask for clarification.
+
+Single lines show the determinant of a matrix  (telling you something about the scale factor when using the matrix to enlarge a vector).
+
+```{=tex}
+\begin{equation}
+det(\textbf{A}) = 
+\begin{vmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9
+\end{vmatrix}
+\ne
+\begin{pmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9
+\end{pmatrix}
+\end{equation}
+```
+
+Double lines are for the norm of a matrix (telling you something about the size of the elements).
+
+```{=tex}
+\begin{equation}
+norm(\textbf{A}) = 
+\begin{Vmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9
+\end{Vmatrix}
+\ne
+\begin{pmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9
+\end{pmatrix}
+\end{equation}
+```
+
+If you are working with numbers or vectors then single and double lines are often used interchangeably to mean 'distance from the origin' or 'magnitude of the vector'.
+
+```{=tex}
+\begin{equation}
+\Vert -3 \Vert = \vert -3 \vert = abs(-3) = 3 \\
+\Vert (3,4) \Vert = \vert (3,4) \vert =  \sqrt{3^2 + 4^2} = 5 \\
+\end{equation}
+```
+
+## Statistics
+### Random variables
+
+In general uppercase letters are used to name random variables and lowercase letters are for the values those variables.
+
+For example
+
+
+```{=tex}
+\begin{array}{ll}
+
+X & \text{possible values obtained when rolling a dice} \\
+x & \text{the value after a single roll } \\
+X = \{x\} &  \text{the set of possible values} \\
+& = \{1,2,3,4,5,6\} \\
+x_1, x_2, x_3 & \text{the results obtained from three rolls of the dice} \\
+x_i & \text{the value of one of the rolls of the dice} \\
+P(X = x) & \text{the probability that the value rolled is a specific value} \\
+P(X = 2) & \text{the probability that a 2 is rolled}
+
+\end{array}
+```
+
+### Summary statistics
+
+```{=tex}
+\begin{array}{l\l}
+
+\mu & \text{'mew'} &\text{population mean}\\
+\mu_{X} & \text{'mew X'} &\text{population mean of X}\\
+\bar{x} & \text{'x bar'} & \text{sample mean} \\
+\sigma & \text{'sigma'} &\text{standard deviation}\\
+\sigma_{X} & \text{'sigma X'} &\text{standard deviation of X}\\
+s  && \text{sample standard deviation} \\
+\rho & \text{'ro'} & \text{product moment correlation coefficient of population} \\
+r_x && \text{product moment correlation coefficient of sample}
+
+
+
+
+\end{array}
+```
+
+
+
+## Dictionary
+### General notation
+
+```{=tex}
+\begin{array}{ll}
+
+= & \text{equal to} \\
+\neq & \text{not equal to} \\
+\approx & \text{is approximately equal to} \\
+\infty & \text{infinity} \\ 
+\propto & \text{is proportional to} \\
+\therefore & \text{therefore} \\
+\because & \text{because} \\
+< & \text{less than} \\
+> & \text{greater than} \\
+\le & \text{less than or equal to} \\
+\ge & \text{greater than or equal to} \\
+\implies & \text{implies} \\ 
+{:} & \text{such that} \\
+\forall & \text{for all}
+
+\end{array}
+```
+
+### Set notation
+
+```{=tex}
+\begin{array}{ll}
+
+\in & \text{is an element of} \\
+\notin & \text{is not an element of} \\
+\subset & \text{is a subset of} \\
+\emptyset & \text{the empty set} \\
+A' & \text{the complement of} A \\
+\mathbb{N} & \text{the natural numbers} \\
+\mathbb{Z} & \text{the integers} \\
+\mathbb{R} & \text{the real numbers} \\
+\mathbb{Q} & \text{the rational numbers} \\
+\mathbb{C} & \text{the complex numbers} \\
+\cup & \text{union} \\
+\cap & \text{intersection} \\
+\end{array}
+```
+
+### Series notation
+
+```{=tex}
+\begin{array}{ll}
+
+\sum & \text{sum of} \\
+\sum_{i=1}^{n} a_n & = a_1 + a_2 + ... + a_n\\
+\prod & \text{product of} \\
+\prod_{i=1}^{n} a_n & a_1 \times a_2 \times ... \times a_n \\
+n! & \text{n factorial} \\
+ & =n \times (n-1) \times... x 2 x 1 \\
+\binom{n}{k} & \text{n choose r (the binomial coefficient)} \\
+{}^{n}C_{k} & \text{n choose r (the binomial coefficient)}
+\end{array}
+```
+
+### Function notation
+
+```{=tex}
+\begin{array}{ll}
+
+f: x \mapsto y & \text{the function f maps x onto y} \\
+f^{-1} & \text{the inverse of f} \\
+\underset{x \rightarrow \infty}{lim} f(x) & \text{the limit of f(x) as x tends to infinity}
+
+\end{array}
+```
+
