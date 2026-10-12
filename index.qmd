@@ -1,5 +1,5 @@
 ---
-title: "Self-Explanation Training for Mathematics Students"
+title: "Mathematical notation - help my lecturer is speaking a different language!"
 format:
   html:
     toc: true
@@ -12,15 +12,8 @@ format:
       text: |
         <footer class="se-footer">
           <h2>Credits and licence</h2>
-          <p>This page is adapted from <strong>Self-Explanation Training for Mathematics Students</strong> by Dr Lara Alcock, Dr Mark Hodds and Dr Matthew Inglis, Mathematics Education Centre, Loughborough University.</p>
-          <p>Adapted into an interactive form by Ruth Hand, University of Bath.</p>
-          <p><strong>Contacts</strong><br>
-          Dr Lara Alcock<br>
-          Dr Mark Hodds<br>
-          Dr Matthew Inglis<br>
-          Mathematics Education Centre, Loughborough University<br>
-          <a href="https://mec.lboro.ac.uk">mec.lboro.ac.uk</a></p>
-          <p><strong>Licence.</strong> The original booklet is licensed under a <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>. This adapted version is also licensed under the <a href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.</p>
+          <p>Written by Ruth Hand, University of Bath, 2019.</p>
+          <p><strong>Licence.</strong> <em>Mathematical notation - help my lecturer is speaking a different language!</em> © 2019 by Ruth Hand is licensed under a <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.</p>
         </footer>
     include-in-header:
       text: |
@@ -49,65 +42,30 @@ format:
           .se-sec-head h2:focus-visible { outline: 2px solid var(--se-accent); outline-offset: 3px; }
           .se-chev { margin-left: auto; font-size: 1rem; transition: transform .2s; }
           .se-collapsed .se-chev { transform: rotate(-90deg); }
-          .se-subtitle { margin-top: .35rem; font-size: 1.1rem; color: #1f2937; }
-          .se-subtitle p { margin: 0; }
-          .se-subtitle strong { color: var(--se-accent); }
           .se-sec-body { padding: .75rem 1.25rem 1rem 1.25rem; }
+          .se-sec-body h3 { color: var(--se-accent); }
           .se-collapsed > .se-sec-body { display: none; }
           #TOC a.se-toc-themed::before { content: ""; display: inline-block; width: .6em; height: .6em; border-radius: 50%;
                                          background: var(--se-accent); margin-right: .45em; vertical-align: .05em; }
           .se-box { border: 1px solid #d0d7de; border-radius: 6px; padding: 1rem 1.25rem; margin: 1.25rem 0; }
           .se-box > :last-child { margin-bottom: 0; }
           .se-precheck .se-prompt { margin-top: 0; }
+          .se-prompt { margin: .6rem 0 .5rem 0; }
+          .se-prompt p { margin: 0; }
+          .se-prompt p:first-child::before { content: "Ask yourself: "; font-weight: 600; color: var(--se-accent); }
           .se-reveal { display: none; margin-top: .75rem; }
           .se-reveal.open { display: block; }
           .se-reveal p { margin-bottom: 0; }
+          .se-reveal-btn { padding: .3rem .8rem; border-radius: 6px; border: 1px solid var(--se-accent); background: #fff;
+                           color: var(--se-accent); cursor: pointer; font: inherit; font-size: .9rem; }
 
-          /* ---------- Pinned proofs ---------- */
-          .se-pinned.docked, .se-pinned.drawer { position: fixed; z-index: 1030; background: #fff; border: 1px solid #d0d7de;
-                                                 border-top: 4px solid var(--se-accent); border-radius: 8px;
-                                                 box-shadow: 0 6px 20px rgba(0,0,0,.12); font-size: .85rem; overflow: auto; }
-          .se-pinned.docked { top: 1.5rem; right: 1rem; max-height: calc(100vh - 3rem); }
-          .se-pinned.drawer { right: .75rem; bottom: 4.25rem; width: min(360px, calc(100vw - 1.5rem)); max-height: 70vh; }
-          .se-pinned.drawer:not(.open) { display: none; }
-          .se-pin-head { display: flex; justify-content: space-between; align-items: center; padding: .45rem .75rem;
-                         background: var(--se-accent-soft); color: var(--se-accent); font-weight: 600; position: sticky; top: 0; cursor: pointer; }
-          .se-pin-close { border: none; background: none; color: var(--se-accent); font-size: 1.2rem; line-height: 1; cursor: pointer; padding: 0 .25rem; }
-          .se-pin-body { padding: .6rem .85rem .75rem; }
-          .se-pin-body p { margin: 0 0 .45rem; }
-          .se-pinned.min .se-pin-body { display: none; }
-          .se-pin-fab { position: fixed; right: .75rem; bottom: .75rem; z-index: 1031; padding: .55rem 1rem; border-radius: 999px;
-                        border: none; background: var(--se-accent); color: #fff; box-shadow: 0 4px 12px rgba(0,0,0,.2); cursor: pointer; font: inherit; }
-          .se-pin-fab[hidden] { display: none; }
-          .se-pinned:not(.docked):not(.drawer) { display: none; }
-          .se-pinned.se-pin-off, .se-pin-fab.se-pin-off { display: none !important; }
-          .se-pin-proof > p.se-pl-hidden { display: none; }
-          .se-pin-proof > p.se-pl-current { color: var(--se-accent); border-left: 3px solid var(--se-accent); padding-left: .45rem; margin-left: -.6rem; }
-
-          /* ---------- Annotated example proof (pop-out comments) ---------- */
-          .se-annotated { border: 1px solid #d0d7de; border-radius: 6px; padding: 1rem 1.25rem; margin: 1.25rem 0; }
-          .se-aline { padding: .35rem .6rem; margin: .15rem 0; border-radius: 6px; }
-          .se-aline.open { background: var(--se-accent-tint); }
-          .se-aline > p { margin: 0; }
-          .se-note-btn { border: 1px solid var(--se-accent); background: #fff; color: var(--se-accent); border-radius: 999px;
-                         font-size: .8rem; padding: .05rem .5rem; margin-left: .5rem; cursor: pointer; vertical-align: middle; }
-          .se-note-btn:hover, .se-aline.open .se-note-btn { background: var(--se-accent); color: #fff; }
-          .se-note { display: none; margin: .5rem 0 .25rem 1rem; padding: .6rem .9rem; background: var(--se-accent-soft);
-                     border-left: 4px solid var(--se-accent); border-radius: 0 6px 6px 0; }
-          .se-note::before { content: "A reader's self-explanation"; display: block; font-size: .75rem; font-weight: 600;
-                             text-transform: uppercase; letter-spacing: .04em; color: var(--se-accent); margin-bottom: .2rem; }
-          .se-note p { margin: 0; font-style: italic; }
-          .se-aline.open .se-note { display: block; }
-          .se-toggle-all { margin-top: .75rem; padding: .35rem .8rem; border-radius: 6px; border: 1px solid var(--se-accent);
-                           background: #fff; color: var(--se-accent); cursor: pointer; font: inherit; font-size: .9rem; }
-
-          /* ---------- Classification quiz ---------- */
-          .se-quiz-set { counter-reset: seq; }
+          /* ---------- Questions ---------- */
+          body { counter-reset: seq; }
           .se-quiz { counter-increment: seq; border: 1px solid #d0d7de; border-left: 5px solid var(--se-accent);
                      border-radius: 6px; padding: 1rem 1.25rem; margin: 1rem 0; }
-          .se-quiz::before { content: "Comment " counter(seq); display: block; font-size: .8rem; font-weight: 600;
+          .se-quiz::before { content: "Question " counter(seq); display: block; font-size: .8rem; font-weight: 600;
                              text-transform: uppercase; letter-spacing: .04em; color: var(--se-accent); margin-bottom: .4rem; }
-          .se-quiz blockquote { margin: 0 0 .75rem 0; }
+          .se-quiz > p:first-of-type { margin-bottom: .75rem; }
           button.se-option { margin: 0 .5rem .5rem 0; padding: .4rem .9rem; border-radius: 999px;
                              border: 1px solid var(--se-accent); background: #fff; color: var(--se-accent);
                              cursor: pointer; font: inherit; }
@@ -120,41 +78,16 @@ format:
           .se-feedback { display: none; margin-top: .5rem; padding-top: .6rem; border-top: 1px dashed #d0d7de; }
           .se-feedback p { margin-bottom: 0; }
           .se-quiz.solved .se-feedback { display: block; }
-          .se-score { font-weight: 600; color: var(--se-accent); margin-top: .5rem; }
+          .se-score { font-weight: 600; color: var(--se-accent); margin: .5rem 0 0 0; }
 
-          /* ---------- Guided line-by-line practice proofs ---------- */
-          .se-steps { border: 1px solid #d0d7de; border-radius: 6px; padding: 1rem 1.25rem; margin: 1.5rem 0; }
-          .se-step { display: none; padding: .4rem .75rem; margin: .25rem 0; border-left: 4px solid transparent; }
-          .se-step.shown { display: block; }
-          .se-step:not(.current) > .se-line { color: var(--se-muted); }
-          .se-step.current { border-left-color: var(--se-accent); background: var(--se-accent-tint); padding-bottom: .75rem; }
-          .se-line p { margin: 0; }
-          .se-step:not(.current) > .se-prompt,
-          .se-step:not(.current) > .se-reveal-btn,
-          .se-step:not(.current) > .se-guide { display: none; }
-          .se-prompt { margin: .6rem 0 .5rem 0; }
-          .se-prompt p { margin: 0; }
-          .se-prompt p:first-child::before { content: "Ask yourself: "; font-weight: 600; color: var(--se-accent); }
-          .se-prompt ~ .se-prompt p:first-child::before { content: "Then ask yourself: "; }
-          .se-guide + .se-prompt { margin-top: 1.1rem; }
-          .se-reveal-btn { padding: .3rem .8rem; border-radius: 6px; border: 1px solid var(--se-accent); background: #fff;
+          /* ---------- Dictionary self-test ---------- */
+          button.se-flip { padding: .15rem .8rem; border-radius: 999px; border: 1px solid var(--se-accent); background: #fff;
                            color: var(--se-accent); cursor: pointer; font: inherit; font-size: .9rem; }
-          .se-guide { display: none; gap: .75rem; margin-top: .75rem; grid-template-columns: 1fr 1fr; }
-          .se-step.current > .se-guide.open { display: grid; }
-          @media (max-width: 700px) { .se-guide { grid-template-columns: 1fr; } }
-          .se-good, .se-bad { padding: .6rem .8rem; border-radius: 6px; background: #fff; border: 1px solid #d0d7de; font-size: .95em; }
-          .se-good { border-top: 4px solid var(--se-right); }
-          .se-bad  { border-top: 4px solid var(--se-wrong); }
-          .se-good::before { content: "\2713  Shows understanding"; display: block; font-weight: 600; color: var(--se-right); margin-bottom: .3rem; }
-          .se-bad::before  { content: "\2717  Doesn't show understanding yet"; display: block; font-weight: 600; color: var(--se-wrong); margin-bottom: .3rem; }
-          .se-good ul, .se-bad ul { padding-left: 1.1rem; margin-bottom: 0; }
-          .se-good li, .se-bad li { margin-bottom: .35rem; }
-          .se-controls { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; margin-top: 1rem; }
-          .se-controls button { padding: .4rem .9rem; border-radius: 6px; border: 1px solid var(--se-accent);
-                                background: var(--se-accent); color: #fff; cursor: pointer; font: inherit; }
-          .se-controls button.se-secondary { background: #fff; color: var(--se-accent); }
-          .se-controls button:disabled { opacity: .45; cursor: default; }
-          .se-counter { margin-left: auto; color: var(--se-muted); font-variant-numeric: tabular-nums; }
+          button.se-flip:hover { background: var(--se-accent-soft); }
+          .se-flip-shown { display: inline; }
+          .se-flip-shown .se-hide { margin-left: .5rem; font-size: .75rem; border: none; background: none; color: var(--se-muted);
+                                    cursor: pointer; text-decoration: underline; }
+          .se-dict-controls { display: flex; gap: .5rem; margin: .5rem 0 1rem; }
 
           /* ---------- Credits footer (always visible) ---------- */
           .se-footer { max-width: 900px; margin: 3rem auto 2rem auto; padding: 1rem 1.5rem; background: #f5f7f9;
@@ -164,13 +97,11 @@ format:
 
           /* Show everything when printing */
           @media print {
-            .se-collapsed > .se-sec-body, .se-step, .se-feedback, .se-note, .se-prompt, .se-reveal { display: block !important; }
-            .se-guide { display: grid !important; }
-            .se-controls, .se-sec-controls, .se-reveal-btn, .se-note-btn, .se-toggle-all,
-            .se-pinned, .se-pin-fab, .se-chev { display: none !important; }
+            .se-collapsed > .se-sec-body, .se-feedback, .se-reveal { display: block !important; }
+            .se-sec-controls, .se-reveal-btn, .se-chev, .se-dict-controls, .se-hide { display: none !important; }
           }
         </style>
-        <noscript><style>.se-pinned { display: block !important; } .se-reveal, .se-step, .se-feedback, .se-note { display: block !important; } .se-guide { display: grid !important; }</style></noscript>
+        <noscript><style>.se-reveal, .se-feedback { display: block !important; }</style></noscript>
         <script>
           document.addEventListener("DOMContentLoaded", function () {
             function typeset(el) {
@@ -182,84 +113,6 @@ format:
               return b;
             }
 
-            /* ---- Pinned proofs: docked at the right on wide screens, pop-up drawer otherwise.
-                    A section heading with class .se-pin-KEY shows the pin with data-pin="KEY"
-                    while that section is open and on screen. ---- */
-            var updatePin = function () {};
-            var pins = Array.prototype.slice.call(document.querySelectorAll(".se-pinned"));
-            if (pins.length) {
-              var fab = makeButton("", "se-pin-fab");
-              document.body.appendChild(fab);
-              var active = null;
-              pins.forEach(function (pin) {
-                document.body.appendChild(pin);
-                var head = document.createElement("div"); head.className = "se-pin-head";
-                var title = document.createElement("span"); title.textContent = "📌 " + (pin.dataset.title || "Proof");
-                var close = makeButton("–", "se-pin-close");
-                head.appendChild(title); head.appendChild(close);
-                var body = document.createElement("div"); body.className = "se-pin-body";
-                while (pin.firstChild) body.appendChild(pin.firstChild);
-                pin.appendChild(head); pin.appendChild(body);
-                pin._close = close;
-                head.addEventListener("click", function () {
-                  if (pin.classList.contains("docked")) { pin.classList.toggle("min"); layout(); }
-                  else { pin.classList.remove("open"); }
-                });
-              });
-              function layout() {
-                var ref = document.querySelector("main section.level2") || document.querySelector("main");
-                var space = ref ? window.innerWidth - ref.getBoundingClientRect().right - 40 : 0;
-                var docked = space >= 240;
-                pins.forEach(function (pin) {
-                  if (docked) {
-                    pin.classList.add("docked"); pin.classList.remove("drawer", "open");
-                    pin.style.width = Math.min(space, 360) + "px";
-                    var min = pin.classList.contains("min");
-                    pin._close.textContent = min ? "+" : "–";
-                    pin._close.setAttribute("aria-label", min ? "Expand" : "Minimise");
-                  } else {
-                    pin.classList.remove("docked", "min"); pin.classList.add("drawer");
-                    pin.style.width = "";
-                    pin._close.textContent = "×";
-                    pin._close.setAttribute("aria-label", "Close");
-                  }
-                });
-                fab.hidden = docked;
-              }
-              fab.addEventListener("click", function () { if (active) active.classList.toggle("open"); });
-              updatePin = function () {
-                var best = null, bestVis = 0, top = window.innerHeight * 0.15, bottom = window.innerHeight * 0.85;
-                document.querySelectorAll("main section.level2:not(.se-collapsed)").forEach(function (sec) {
-                  if (!sec.dataset.pinKey) return;
-                  var r = sec.getBoundingClientRect();
-                  var vis = Math.min(r.bottom, bottom) - Math.max(r.top, top);
-                  if (vis > bestVis) { bestVis = vis; best = sec.dataset.pinKey; }
-                });
-                active = null;
-                pins.forEach(function (pin) {
-                  var on = pin.dataset.pin === best;
-                  if (on) active = pin;
-                  pin.classList.toggle("se-pin-off", !on);
-                  if (!on) pin.classList.remove("open");
-                });
-                if (active) {
-                  var theme = Array.prototype.filter.call(active.classList, function (c) { return c.indexOf("se-theme-") === 0; })[0];
-                  fab.className = "se-pin-fab" + (theme ? " " + theme : "");
-                  fab.textContent = "📌 " + (active.dataset.title || "Proof");
-                } else {
-                  fab.classList.add("se-pin-off");
-                }
-              };
-              var ticking = false;
-              window.addEventListener("scroll", function () {
-                if (ticking) return;
-                ticking = true;
-                requestAnimationFrame(function () { ticking = false; updatePin(); });
-              }, { passive: true });
-              window.addEventListener("resize", function () { layout(); updatePin(); });
-              layout();
-            }
-
             /* ---- Collapsible, colour-coded sections (closed at first) ---- */
             var sections = Array.prototype.slice.call(document.querySelectorAll("main section.level2"));
             function setOpen(sec, open) {
@@ -267,15 +120,12 @@ format:
               var h = sec.querySelector(":scope > .se-sec-head h2");
               if (h) h.setAttribute("aria-expanded", String(open));
               if (open) typeset(sec);
-              updatePin();
             }
             sections.forEach(function (sec) {
               var h = sec.querySelector(":scope > h2");
               if (!h) return;
               var classes = Array.prototype.slice.call(sec.classList).concat(Array.prototype.slice.call(h.classList));
               var theme = classes.filter(function (c) { return c.indexOf("se-theme-") === 0; })[0];
-              var pinClass = classes.filter(function (c) { return c.indexOf("se-pin-") === 0; })[0];
-              if (pinClass) sec.dataset.pinKey = pinClass.slice(7);
               if (theme) {
                 sec.classList.add(theme);
                 if (sec.id) {
@@ -287,11 +137,7 @@ format:
               var body = document.createElement("div"); body.className = "se-sec-body";
               sec.insertBefore(head, h);
               head.appendChild(h);
-              Array.prototype.slice.call(sec.childNodes).forEach(function (n) {
-                if (n === head) return;
-                if (n.nodeType === 1 && n.classList.contains("se-subtitle")) head.appendChild(n);
-                else body.appendChild(n);
-              });
+              Array.prototype.slice.call(sec.childNodes).forEach(function (n) { if (n !== head) body.appendChild(n); });
               sec.appendChild(body);
               var chev = document.createElement("span"); chev.className = "se-chev"; chev.textContent = "▾";
               h.appendChild(chev);
@@ -325,81 +171,45 @@ format:
             });
             window.addEventListener("hashchange", function () { openFor(decodeURIComponent(location.hash.slice(1))); });
             if (location.hash) openFor(decodeURIComponent(location.hash.slice(1)));
-            updatePin();
 
-            /* ---- Example proof: tap a line's button to pop out the reader's comment ---- */
-            document.querySelectorAll(".se-annotated").forEach(function (box) {
-              var lines = Array.prototype.slice.call(box.querySelectorAll(".se-aline"));
-              var toggleAll = makeButton("Show all comments", "se-toggle-all");
-              function sync() {
-                var allOpen = lines.every(function (l) { return l.classList.contains("open"); });
-                toggleAll.textContent = allOpen ? "Hide all comments" : "Show all comments";
-              }
-              lines.forEach(function (line) {
-                var note = line.querySelector(".se-note");
-                if (!note) return;
-                var btn = makeButton("💬 explain", "se-note-btn");
-                btn.setAttribute("aria-expanded", "false");
-                var p = line.querySelector(":scope > p");
-                (p || line).appendChild(btn);
-                btn.addEventListener("click", function () {
-                  var open = line.classList.toggle("open");
-                  btn.setAttribute("aria-expanded", String(open));
-                  if (open) typeset(note);
-                  sync();
-                });
-              });
-              toggleAll.addEventListener("click", function () {
-                var openAll = !lines.every(function (l) { return l.classList.contains("open"); });
-                lines.forEach(function (l) {
-                  l.classList.toggle("open", openAll);
-                  var b = l.querySelector(".se-note-btn");
-                  if (b) b.setAttribute("aria-expanded", String(openAll));
-                });
-                typeset(box); sync();
-              });
-              box.appendChild(toggleAll);
-            });
-
-            /* ---- Classification quiz: wrong answers struck out, right answer reveals feedback, running score ---- */
-            document.querySelectorAll(".se-quiz-set").forEach(function (set) {
-              var quizzes = set.querySelectorAll(".se-quiz");
-              var scoreEl = set.querySelector(".se-score");
-              var score = 0, done = 0;
-              function updateScore() {
-                if (!scoreEl) return;
-                scoreEl.textContent = "Correct first time: " + score + " / " + quizzes.length +
+            /* ---- Questions: wrong answers struck out, right answer reveals feedback, running score ---- */
+            var quizzes = document.querySelectorAll(".se-quiz");
+            var scoreEls = document.querySelectorAll(".se-score");
+            var score = 0, done = 0;
+            function updateScore() {
+              scoreEls.forEach(function (el) {
+                el.textContent = "Correct first time: " + score + " / " + quizzes.length +
                   (done === quizzes.length ? "  — all done!" : "");
-              }
-              quizzes.forEach(function (quiz) {
-                var firstTry = true;
-                quiz.querySelectorAll("span.se-option").forEach(function (span) {
-                  var btn = makeButton("", "se-option");
-                  btn.innerHTML = span.innerHTML;
-                  if (span.dataset.correct === "true") btn.dataset.correct = "true";
-                  span.replaceWith(btn);
-                  btn.addEventListener("click", function () {
-                    if (quiz.classList.contains("solved")) return;
-                    if (btn.dataset.correct === "true") {
-                      btn.classList.add("right");
-                      quiz.classList.add("solved");
-                      quiz.querySelectorAll("button.se-option").forEach(function (b) { b.disabled = true; });
-                      if (firstTry) score++;
-                      done++;
-                      updateScore();
-                      typeset(quiz);
-                    } else {
-                      firstTry = false;
-                      btn.classList.add("wrong");
-                      btn.disabled = true;
-                    }
-                  });
+              });
+            }
+            quizzes.forEach(function (quiz) {
+              var firstTry = true;
+              quiz.querySelectorAll("span.se-option").forEach(function (span) {
+                var btn = makeButton("", "se-option");
+                btn.innerHTML = span.innerHTML;
+                if (span.dataset.correct === "true") btn.dataset.correct = "true";
+                span.replaceWith(btn);
+                btn.addEventListener("click", function () {
+                  if (quiz.classList.contains("solved")) return;
+                  if (btn.dataset.correct === "true") {
+                    btn.classList.add("right");
+                    quiz.classList.add("solved");
+                    quiz.querySelectorAll("button.se-option").forEach(function (b) { b.disabled = true; });
+                    if (firstTry) score++;
+                    done++;
+                    updateScore();
+                    typeset(quiz);
+                  } else {
+                    firstTry = false;
+                    btn.classList.add("wrong");
+                    btn.disabled = true;
+                  }
                 });
               });
-              updateScore();
             });
+            updateScore();
 
-            /* ---- Pre-checks: ask a question, then reveal the answer ---- */
+            /* ---- Ask yourself: reveal the answer ---- */
             document.querySelectorAll(".se-precheck").forEach(function (box) {
               var reveal = box.querySelector(".se-reveal");
               if (!reveal) return;
@@ -413,620 +223,496 @@ format:
               });
             });
 
-            /* ---- Practice proofs: one line at a time, with a guided check for the current line ---- */
-            document.querySelectorAll(".se-steps").forEach(function (box) {
-              var steps = Array.prototype.slice.call(box.querySelectorAll(":scope > .se-step"));
-
-              steps.forEach(function (step) {
-                step.querySelectorAll(":scope > .se-guide").forEach(function (guide) {
-                  var b = makeButton("Compare my thinking", "se-reveal-btn");
-                  step.insertBefore(b, guide);
-                  b.addEventListener("click", function () {
-                    var open = guide.classList.toggle("open");
-                    b.textContent = open ? "Hide examples" : "Compare my thinking";
-                    if (open) typeset(guide);
-                  });
-                });
-              });
-
-              var bar = document.createElement("div");
-              bar.className = "se-controls";
-              var back = makeButton("← Back", "se-secondary");
-              var next = makeButton("Next line →");
-              var reset = makeButton("Start again", "se-secondary");
-              var counter = document.createElement("span");
-              counter.className = "se-counter";
-              [back, next, reset, counter].forEach(function (el) { bar.appendChild(el); });
-              box.appendChild(bar);
-
-              var sec = box.closest("section.level2");
-              var key = sec && sec.dataset.pinKey;
-              var pinned = key ? document.querySelector('.se-pinned[data-pin="' + key + '"]') : null;
-              var pinLines = pinned ? Array.prototype.slice.call(pinned.querySelectorAll(".se-pin-proof > p")) : [];
-
-              var shown = 1;
-              function render() {
-                steps.forEach(function (s, i) {
-                  s.classList.toggle("shown", i < shown);
-                  s.classList.toggle("current", i === shown - 1);
-                });
-                pinLines.forEach(function (l, i) {
-                  l.classList.toggle("se-pl-hidden", i >= shown);
-                  l.classList.toggle("se-pl-current", i === shown - 1);
-                });
-                if (pinned) typeset(pinned);
-                counter.textContent = "Line " + shown + " / " + steps.length;
-                back.disabled = shown <= 1;
-                next.disabled = shown >= steps.length;
-                typeset(box);
-              }
-              next.addEventListener("click", function () { if (shown < steps.length) { shown++; render(); } });
-              back.addEventListener("click", function () { if (shown > 1) { shown--; render(); } });
-              reset.addEventListener("click", function () { shown = 1; render(); });
-              render();
+            /* ---- Dictionary: say the meaning, then reveal it ---- */
+            var flips = [];
+            document.querySelectorAll("span.se-flip").forEach(function (span) {
+              var wrap = document.createElement("span");
+              var btn = makeButton("Reveal", "se-flip");
+              var shown = document.createElement("span"); shown.className = "se-flip-shown"; shown.hidden = true;
+              shown.innerHTML = span.innerHTML;
+              var hide = makeButton("hide", "se-hide"); shown.appendChild(hide);
+              wrap.appendChild(btn); wrap.appendChild(shown);
+              span.replaceWith(wrap);
+              function set(open) { btn.hidden = open; shown.hidden = !open; if (open) typeset(shown); }
+              btn.addEventListener("click", function () { set(true); });
+              hide.addEventListener("click", function () { set(false); });
+              flips.push(set);
+            });
+            document.querySelectorAll(".se-dict-controls").forEach(function (box) {
+              var all = makeButton("Reveal all", "se-reveal-btn"), none = makeButton("Hide all", "se-reveal-btn");
+              all.addEventListener("click", function () { flips.forEach(function (f) { f(true); }); });
+              none.addEventListener("click", function () { flips.forEach(function (f) { f(false); }); });
+              box.appendChild(all); box.appendChild(none);
             });
           });
         </script>
 ---
 
-::: {.se-pinned .se-theme-purple data-pin="example" data-title="Example proof"}
-**Theorem.** No odd integer can be expressed as the sum of three even integers.
+There are lots of different ways of writing maths that are equivalent and can be used interchangeably. This can be confusing if your lecturer uses a different notation than you are used to.
 
-**Proof.** Assume, to the contrary, that there is an odd integer $x$, such that $x = a + b + c$, where $a$, $b$, and $c$ are even integers.
+The reason that there are different ways to say the same thing in maths is because mathematical notation has been developed over many thousands of years by many different people.
 
-Then $a = 2k$, $b = 2l$, and $c = 2p$, for some integers $k$, $l$, and $p$.
-
-Thus $x = a + b + c = 2k + 2l + 2p = 2(k + l + p)$.
-
-It follows that $x$ is even; a contradiction.
-
-Thus no odd integer can be expressed as the sum of three even integers.
-:::
-
-::: {.se-pinned .se-theme-pink data-pin="pp1" data-title="Practice Proof 1"}
-**Theorem.** There is no smallest positive real number.
-
-::: {.se-pin-proof}
-**Proof**. Assume, to the contrary, that there exists a smallest positive real number.
-
-Therefore, by assumption, there exists a real number $r$ such that for every positive number $s$, $0 < r < s$.
-
-Consider $m = \dfrac{r}{2}$.
-
-Clearly, $0 < m < r$.
-
-This is a contradiction since $m$ is a positive real number that is smaller than $r$.
-
-Thus there is no smallest positive real number.
-:::
-:::
-
-::: {.se-pinned .se-theme-gold data-pin="pp2" data-title="Practice Proof 2"}
-**Definition.** An abundant number is a positive integer $n$ whose divisors add up to more than $2n$. For example, 12 is abundant because $1 + 2 + 3 + 4 + 6 + 12 > 24$.
-
-**Theorem.** The product of two distinct primes is not abundant.
-
-::: {.se-pin-proof}
-**Proof.** Let $n = p_1p_2$ where $p_1$ and $p_2$ are distinct primes.
-
-Assume that $2 \leq p_1$ and $3 \leq p_2$.
-
-The divisors of $n$ are $1$, $p_1$, $p_2$ and $p_1p_2$.
-
-Note that $\dfrac{p_1 + 1}{p_1 - 1}$ is a decreasing function of $p_1$.
-
-So $\max\left\{\dfrac{p_1 + 1}{p_1 - 1}\right\} = \dfrac{2 + 1}{2 - 1} = 3$.
-
-Hence $\dfrac{p_1 + 1}{p_1 - 1} \leq p_2$.
-
-So $p_1 + 1 \leq p_1p_2 - p_2$.
-
-So $p_1 + 1 + p_2 \leq p_1p_2$.
-
-So $1 + p_1 + p_2 + p_1p_2 \leq 2p_1p_2$.
-
-Thus $n$ is not abundant.
-:::
-:::
-
-## How to Read Proofs: The "Self-Explanation" Strategy {.se-theme-teal}
-
-Self-explanation is a way of reading proofs that has been shown to substantially improve students' understanding. In one study, students who worked through these materials before reading a proof scored 30% higher on a comprehension test than students who didn't.
-
-Try to use it every time you read a proof: in lectures, in your notes or in a book.
-
-## How to Self-Explain {.se-theme-blue}
-
-To improve your understanding of a proof, there is a series of techniques you should apply.
-
-After reading each line:
-
-- Try to identify and elaborate the main ideas in the proof.
-- Attempt to explain each line in terms of previous ideas. These may be ideas from the information in the proof, examples from previous theorems/proofs, or ideas from your own prior knowledge of the topic area.
-- Consider any questions that arise if new information contradicts your current understanding.
+In English 'big' (from Middle English) and 'large' (from Latin) mean the same thing. There are similar examples in maths.
 
 ::: {.se-box}
-Before proceeding to the next line of the proof you should ask yourself the following:
-
-- Do I understand the ideas used in that line?
-- Do I understand why those ideas have been used?
-- How do those ideas link to other ideas in the proof, other theorems, or prior knowledge that I may have?
-- Does the self-explanation I have generated help to answer the questions that I am asking?
+**The most important thing to remember** is that choice of notation is often cultural or simply personal preference, and therefore it is okay to ask for clarification.
 :::
 
-Below you will find an example showing possible self-explanations generated by students when trying to understand a proof. Please read the example carefully in order to understand how to use this strategy in your own learning.
-
-## Example of self-explaining a theorem {.se-theme-purple .se-pin-example}
-
-Read each line of the proof and try to self-explain it yourself first. Then select **💬 explain** to see how one reader self-explained that line.
-
-A copy of this proof is pinned to the side (📌 **Example proof**) while you work through this section and the next two, so you can refer back to it.
-
-**Theorem.** No odd integer can be expressed as the sum of three even integers.
-
-::: {.se-annotated}
-**Proof.**
-
-::: {.se-aline}
-Assume, to the contrary, that there is an odd integer $x$, such that $x = a + b + c$, where $a$, $b$, and $c$ are even integers.
-
-::: {.se-note}
-"This proof uses the technique of proof by contradiction."
+::: {.se-box .se-precheck}
+::: {.se-prompt}
+how many ways do I know of writing "$a$ multiplied by $b$"? Write them down before you open the first section.
+:::
+::: {.se-reveal data-label="Compare"}
+$a \times b = a \cdot b = ab = a(b) = (a)b = (a)(b)$
 :::
 :::
 
-::: {.se-aline}
-Then $a = 2k$, $b = 2l$, and $c = 2p$, for some integers $k$, $l$, and $p$.
+## Numbers and calculations {.se-theme-teal}
 
-::: {.se-note}
-"Since $a$, $b$ and $c$ are even integers, we have to use the definition of an even integer."
-:::
-:::
+### Division and multiplication
 
-::: {.se-aline}
-Thus $x = a + b + c = 2k + 2l + 2p = 2(k + l + p)$.
+Sometimes we think of $\frac{a}{b}$ as a 'fraction' and $a\div b$ as a 'calculation', but they are actually interchangeable.
 
-::: {.se-note}
-"The proof then replaces $a$, $b$ and $c$ with their respective definitions in the formula for $x$."
-:::
-:::
+$$
+\frac{2}{5} = 2\div 5 = 2/5
+$$
 
-::: {.se-aline}
-It follows that $x$ is even; a contradiction.
+When working with numbers we often use a multiplication sign $\times$, but this is usually dropped when working algebraically as it looks a bit like the letter $x$.
 
-::: {.se-note}
-"The formula for $x$ is then simplified and is shown to satisfy the definition of an even integer also; a contradiction."
-:::
-:::
+If you are working with vectors then it is important to distinguish between the cross product $a \times b$ and the dot product $a \cdot b$, but with scalars (e.g. straightforward numbers), they are interchangeable.
 
-::: {.se-aline}
-Thus no odd integer can be expressed as the sum of three even integers.
-
-::: {.se-note}
-"Therefore, no odd integer can be expressed as the sum of three even integers."
-:::
-:::
-:::
-
-## Self-explanation versus paraphrasing and monitoring {.se-theme-orange .se-pin-example}
-
-You must be aware that the self-explanation strategy is not the same as *monitoring* or *paraphrasing*. These two methods will not help your learning to the same extent as self-explanation.
-
-### Paraphrasing
-
-> "$a$, $b$ and $c$ have to be positive or negative, even whole numbers."
-
-There is no self-explanation in this statement. No additional information is added or linked. The reader merely uses different words to describe what is already represented in the text by the words "even integers". You should avoid using such paraphrasing during your own proof comprehension. Paraphrasing will not help your understanding of the text as much as self-explanation.
-
-### Monitoring
-
-> "OK, I understand that $2(k + l + p)$ is an even integer."
-
-This statement simply shows the reader's thought process. It is not the same as self-explanation because the student does not relate the sentence to additional information in the text or to prior knowledge. Please concentrate on self-explanation rather than monitoring.
-
-## Spot the difference {.se-theme-green .se-pin-example}
-
-Each comment below was made by a student reading the example proof (pinned 📌 at the side). Decide whether it is **self-explanation**, **paraphrasing** or **monitoring**.
-
-::: {.se-quiz-set}
-::: {.se-quiz}
-> "Suppose some odd number is equal to three even numbers added together."
-
-[Self-explanation]{.se-option} [Paraphrasing]{.se-option data-correct="true"} [Monitoring]{.se-option}
-
-::: {.se-feedback}
-**Paraphrasing.** This says the first line of the proof again in everyday words. Nothing new is added, and it doesn't say why the proof starts this way.
-:::
-:::
+$$
+a \times b = a \cdot b = ab = a(b) = (a)b = (a)(b)
+$$
 
 ::: {.se-quiz}
-> "We can write $a = 2k$ because being even means being 2 times some integer."
+Which of these is **not** another way of writing $\frac{7}{3}$?
 
-[Self-explanation]{.se-option data-correct="true"} [Paraphrasing]{.se-option} [Monitoring]{.se-option}
+[$7 \div 3$]{.se-option} [$7/3$]{.se-option} [$3 \div 7$]{.se-option data-correct="true"} [$\tfrac{7}{3}$]{.se-option}
 
 ::: {.se-feedback}
-**Self-explanation.** The line is justified by linking it to the definition of an even integer.
+$3 \div 7 = \frac{3}{7}$. The order matters: the number written first (or on top) is the one being divided.
 :::
+:::
+
+### Dots and commas
+
+Different cultures tend to use dots and commas in different ways. If you aren't sure, please just ask your lecturer to clarify their notation.
+
+A decimal point may be shown in several ways:
+
+$$
+\begin{array}{ll}
+2 \frac{3}{10} & = 2 \cdot 3 \\
+& = 2.3 \\
+& = 2,3
+\end{array}
+$$
+
+but a dot can also be used as multiplication
+
+$$
+\begin{array}{ll}
+2 \times 3 & = 2 \cdot 3 \\
+& = 2.3 \\
+& = 2(3)
+\end{array}
+$$
+
+Commas and dots might also be used for separating groups of a thousand
+
+$$
+\begin{array}{ll}
+2145600 & = 2\ 145\ 600 \\
+& = 2,145,600 \\
+& = 2.145.600
+\end{array}
+$$
+
+::: {.se-quiz}
+Your lecturer writes $4 \cdot 5$ on the board. What does it mean?
+
+[It is definitely $4.5$]{.se-option} [It is definitely $20$]{.se-option} [It could be either; check the context or ask]{.se-option data-correct="true"}
+
+::: {.se-feedback}
+A raised dot can be a decimal point or a multiplication sign. Look at how it is used elsewhere in the lecture, and if you are still unsure, ask.
+:::
+:::
+
+::: {.se-box .se-precheck}
+::: {.se-prompt}
+what number is $1.000$?
+:::
+::: {.se-reveal data-label="Check"}
+To most people in the UK $1.000$ is "one". In much of Europe it would be read as "one thousand". This is why it is worth asking when you aren't sure.
+:::
+:::
+
+## Calculus {.se-theme-blue}
+
+### Maths grammar
+
+| Word | Part of speech | Meaning |
+|:------|:-----|:----------------------------|
+| Calculus | noun | The branch of maths that includes differentiation |
+| Differentiation | noun | The process of finding the derivative |
+| Differential | noun | The change in the variable; the differential of $x$ is $dx$ |
+| Derivative | noun | $\frac{dy}{dx}$ = the rate of change of the function |
+| Differentiate | verb | The act of finding the derivative; you differentiate the function $y$ to find $\frac{dy}{dx}$ |
+| Derive | verb | Red herring! Whilst this sounds like the verb form of derivative it isn't! Use 'differentiate' instead. |
+
+::: {.se-quiz}
+Choose the correct word: "To find the gradient, we need to ______ $y = 3x^2$."
+
+[derive]{.se-option} [differentiate]{.se-option data-correct="true"} [differential]{.se-option} [derivative]{.se-option}
+
+::: {.se-feedback}
+'Differentiate' is the verb. 'Derive' is the red herring: it sounds right but means something different.
+:::
+:::
+
+### Equivalent ways of showing differentiation
+
+Each column below shows the same idea written in a different notation.
+
+$$
+\begin{array}{llllllll}
+\textbf{function} & f(x)= x^2 & y= x^2 & y = x^2 & u^2 & v = z^2 & s = t^2 & f(x) = x^2 \\
+ & \color{orange}{\downarrow} & \color{blue}{\downarrow} & \color{green}{\downarrow} & \color{red}{\downarrow} & \color{purple}{\downarrow} & \color{olive}{\downarrow} & \color{magenta}{\downarrow} \\
+\textbf{derivative} & f'(x)= 2x & \frac{dy}{dx}=2x & y' = 2x & \frac{d(u^2)}{du}=2u & \frac{d}{dz}v = 2z & \dot{s} = 2t & D(f) = 2x \\
+ & \color{orange}{\downarrow} & \color{blue}{\downarrow} & \color{green}{\downarrow} & \color{red}{\downarrow} & \color{purple}{\downarrow} & \color{olive}{\downarrow} & \color{magenta}{\downarrow}\\
+\textbf{second derivative} & f''(x) = 2 & \frac{d^2y}{dx^2}=2 & y'' = 2 & \frac{d^2(u^2)}{du^2}=2 & \frac{d^2}{dz^2}v = 2 & \ddot{s} = 2 & D^2(f) = 2
+\end{array}
+$$
+
+::: {.se-quiz}
+If $s = t^3$, which of these is the second derivative written in the same notation as the $\color{olive}{\text{olive}}$ column?
+
+[$s'' = 6t$]{.se-option} [$\ddot{s} = 6t$]{.se-option data-correct="true"} [$\dot{s} = 3t^2$]{.se-option} [$D^2(s) = 6t$]{.se-option}
+
+::: {.se-feedback}
+Dot notation: one dot for the first derivative, two dots for the second. The other options are also correct values, but written in different notations; $\dot{s} = 3t^2$ is the first derivative.
+:::
+:::
+
+::: {.se-box .se-precheck}
+::: {.se-prompt}
+which notation for differentiation did I use most at school or college? Which ones in the table are new to me?
+:::
+::: {.se-reveal data-label="Check"}
+If any are new, try rewriting $\frac{dy}{dx} = 2x$ from the table in each of the other notations.
+:::
+:::
+
+### Letters that look like d but mean different things
+
+| Symbol | Said as | Meaning |
+|:-----:|:----------|:----------------------|
+| $\Delta x$ | "delta x" | the change in $x$ |
+| $\delta x$ | "delta x" | the small change in $x$ |
+| $dx$ | "the differential" | the change in $x$ when it approaches zero |
+| $\partial x$ | "the partial differential" | the change in $x$ when it approaches zero |
+| $d(x,y)$ | "distance between x and y" | the distance function (metric spaces and topology) |
+
+::: {.se-quiz}
+Which symbol means "the small change in $x$"?
+
+[$\Delta x$]{.se-option} [$\delta x$]{.se-option data-correct="true"} [$\partial x$]{.se-option} [$d(x,y)$]{.se-option}
+
+::: {.se-feedback}
+Lowercase delta, $\delta x$, is the small change. Uppercase delta, $\Delta x$, is the change in $x$. Both are said "delta x", so watch the letter carefully.
+:::
+:::
+
+## Exponentials {.se-theme-purple}
+
+In the expression $a^b$, $b$ can be called the 'power', the 'exponent' or the 'index' (indices is the plural of index).
+
+In the expression $e^b$, $e$ is a number that might be called 'Euler's number' (which is pronounced 'oy-luh').
+
+The expression $e^x$ is a function, and can also be written in function notation:
+
+$$
+e^x = \exp(x) = \exp x
+$$
+
+The choice of notation might be used to emphasise that it is a function, or perhaps just to make it easier to read:
+
+$$
+e^{\frac{2x^2}{3 - x}} = \exp\left(\frac{2x^2}{3 - x}\right)
+$$
+
+::: {.se-quiz}
+In $2^5$, what is the 5 **not** called?
+
+[the power]{.se-option} [the exponent]{.se-option} [the index]{.se-option} [the base]{.se-option data-correct="true"}
+
+::: {.se-feedback}
+'Power', 'exponent' and 'index' all mean the same thing. The 2 is the base.
+:::
+:::
+
+## Vectors {.se-theme-orange}
+
+There are so many different notations that can be used for vectors, it can be very confusing.
+
+Vectors are often written in lowercase, and vertices are often uppercase.
+
+You can use a single letter to show a vector, or split it into its components.
+
+$$
+\begin{array}{lllll}
+\overrightarrow{OA} & = \mathbf{a} & = \underset{\sim}{a} & = \vec{a} & = \underline{a}\\
+= (a_1, a_2) & = (a_1 \ \ a_2) & = \begin{pmatrix} a_1 \\ a_2 \end{pmatrix} & = \begin{bmatrix} a_1 \\ a_2 \end{bmatrix} &\\
+= a_1 \mathbf{i} + a_2 \mathbf{j} & = a_1 \hat{i} + a_2 \hat{j} & & &
+\end{array}
+$$
+
+$\hat{a}$ is usually reserved for the 'unit vector in the direction of $\vec{a}$'.
+
+::: {.se-box}
+**Watch out for pointy brackets** though, as they are not used to show something is a vector, but for an operation involving two vectors (the inner product).
+
+$$
+\begin{array}{ll}
+\mathbf{a} = (a_1,a_2), \quad \mathbf{b} = (b_1,b_2) & \text{are vectors}\\
+\langle \mathbf{a}, \mathbf{b} \rangle & \text{is the inner product of the two vectors}
+\end{array}
+$$
 :::
 
 ::: {.se-quiz}
-> "Right, I've got that bit."
+Which of these is **not** a way of writing a vector?
 
-[Self-explanation]{.se-option} [Paraphrasing]{.se-option} [Monitoring]{.se-option data-correct="true"}
+[$\underline{a}$]{.se-option} [$\begin{pmatrix} 3 \\ 4 \end{pmatrix}$]{.se-option} [$\langle \mathbf{a}, \mathbf{b} \rangle$]{.se-option data-correct="true"} [$3\mathbf{i} + 4\mathbf{j}$]{.se-option}
 
 ::: {.se-feedback}
-**Monitoring.** This reports how the reader feels about the line, but gives no reason why the line is true.
+Pointy brackets show the inner product of two vectors, not a vector itself.
 :::
 :::
+
+## Matrices {.se-theme-pink}
+
+Matrices are usually named with a letter, which is written in bold font. You can use curved or square brackets for a matrix, or sometimes even no bracket at all.
+
+Another word for (curved) brackets is 'parentheses' and {curly} brackets are sometimes called 'braces'.
+
+$$
+\mathbf{A} =
+\begin{pmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9
+\end{pmatrix}
+=
+\begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9
+\end{bmatrix}
+=
+\begin{matrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9
+\end{matrix}
+$$
+
+As a general rule matrices are written with uppercase letters, $A$, and elements of a matrix are denoted with lowercase $a$. Each element of the matrix can be written with a subscript, $a_{ij}$, that tells you where it is located:
+
+$$
+\mathbf{A} =
+\begin{pmatrix}
+a_{1,1} & a_{1,2} \\
+a_{2,1} & a_{2,2}
+\end{pmatrix}
+$$
+
+Curly brackets are not generally used for matrices, but because they are used for set notation you could write a matrix using curly brackets:
+
+$$
+\mathbf{A} = \{a_{ij}\}
+$$
 
 ::: {.se-quiz}
-> "They take out a factor of 2 because showing $x$ is 2 times an integer is exactly what's needed to show $x$ is even."
+In the matrix $\mathbf{A}$ at the top of this section, what is $a_{2,3}$?
 
-[Self-explanation]{.se-option data-correct="true"} [Paraphrasing]{.se-option} [Monitoring]{.se-option}
+[$8$]{.se-option} [$6$]{.se-option data-correct="true"} [$2$]{.se-option} [$3$]{.se-option}
 
 ::: {.se-feedback}
-**Self-explanation.** This explains *why* the algebra is done, by linking it to where the proof is heading (the definition of even).
+The first subscript is the row and the second is the column: row 2, column 3 gives $6$.
 :::
 :::
+
+### Straight lines
+
+Straight vertical lines are used for a property of the matrix, rather than the matrix itself.
+
+::: {.se-box}
+**Watch out:** some lecturers' handwriting makes it tricky to tell what style of line is intended! If in doubt, just ask for clarification.
+:::
+
+Single lines show the determinant of a matrix (telling you something about the scale factor when using the matrix to enlarge a vector).
+
+$$
+\det(\mathbf{A}) =
+\begin{vmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9
+\end{vmatrix}
+\ne
+\begin{pmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9
+\end{pmatrix}
+$$
+
+Double lines are for the norm of a matrix (telling you something about the size of the elements).
+
+$$
+\operatorname{norm}(\mathbf{A}) =
+\begin{Vmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9
+\end{Vmatrix}
+\ne
+\begin{pmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9
+\end{pmatrix}
+$$
+
+If you are working with numbers or vectors then single and double lines are often used interchangeably to mean 'distance from the origin' or 'magnitude of the vector'.
+
+$$
+\begin{gathered}
+\Vert -3 \Vert = \vert -3 \vert = \operatorname{abs}(-3) = 3 \\
+\Vert (3,4) \Vert = \vert (3,4) \vert = \sqrt{3^2 + 4^2} = 5
+\end{gathered}
+$$
 
 ::: {.se-quiz}
-> "So $x$ equals two times $k$ plus $l$ plus $p$."
+What is $\vert (6,8) \vert$?
 
-[Self-explanation]{.se-option} [Paraphrasing]{.se-option data-correct="true"} [Monitoring]{.se-option}
+[$14$]{.se-option} [$10$]{.se-option data-correct="true"} [$48$]{.se-option} [$\begin{pmatrix} 6 \\ 8 \end{pmatrix}$]{.se-option}
 
 ::: {.se-feedback}
-**Paraphrasing.** This reads the formula $x = 2(k + l + p)$ out in words, without explaining where it came from or why it matters.
+For a vector, the straight lines mean its magnitude: $\sqrt{6^2 + 8^2} = \sqrt{100} = 10$.
 :::
 :::
+
+## Statistics {.se-theme-gold}
+
+### Random variables
+
+In general uppercase letters are used to name random variables and lowercase letters are for the values of those variables.
+
+For example:
+
+| Notation | Meaning |
+|:---------------:|:----------------------|
+| $X$ | possible values obtained when rolling a dice |
+| $x$ | the value after a single roll |
+| $X = \{x\} = \{1,2,3,4,5,6\}$ | the set of possible values |
+| $x_1, x_2, x_3$ | the results obtained from three rolls of the dice |
+| $x_i$ | the value of one of the rolls of the dice |
+| $P(X = x)$ | the probability that the value rolled is a specific value |
+| $P(X = 2)$ | the probability that a 2 is rolled |
+
+### Summary statistics
+
+| Symbol | Said as | Meaning |
+|:-----:|:----------|:----------------------|
+| $\mu$ | 'mew' | population mean |
+| $\mu_X$ | 'mew X' | population mean of $X$ |
+| $\bar{x}$ | 'x bar' | sample mean |
+| $\sigma$ | 'sigma' | standard deviation |
+| $\sigma_X$ | 'sigma X' | standard deviation of $X$ |
+| $s$ | | sample standard deviation |
+| $\rho$ | 'ro' | product moment correlation coefficient of population |
+| $r_x$ | | product moment correlation coefficient of sample |
 
 ::: {.se-quiz}
-> "Hmm, I'm not sure about this line. I'll read it again."
+You collect the heights of 30 students and work out their average. Which symbol should you use?
 
-[Self-explanation]{.se-option} [Paraphrasing]{.se-option} [Monitoring]{.se-option data-correct="true"}
-
-::: {.se-feedback}
-**Monitoring.** Noticing you're stuck is useful, but it isn't an explanation. The next step is to try to explain the line using definitions or earlier lines.
-:::
-:::
-
-::: {.se-quiz}
-> "Getting $x$ even is impossible, because we started by assuming $x$ was odd and no integer is both. So the starting assumption must be false."
-
-[Self-explanation]{.se-option data-correct="true"} [Paraphrasing]{.se-option} [Monitoring]{.se-option}
+[$\mu$]{.se-option} [$\bar{x}$]{.se-option data-correct="true"} [$\sigma$]{.se-option} [$X$]{.se-option}
 
 ::: {.se-feedback}
-**Self-explanation.** This links the contradiction back to the first line and explains how proof by contradiction finishes the argument.
+The 30 students are a sample, so their average is the sample mean, $\bar{x}$. $\mu$ is reserved for the population mean.
 :::
 :::
 
 ::: {.se-score}
 :::
+
+## Dictionary {.se-theme-green}
+
+Test yourself: say what each symbol means, then click **Reveal** to check.
+
+::: {.se-dict-controls}
 :::
 
-## Practice Proof 1 {.se-theme-pink .se-pin-pp1}
+### General notation
 
-::: {.se-subtitle}
-**Theorem.** There is no smallest positive real number.
-:::
+| Symbol | Meaning |
+|:-------:|:-----------------------|
+| $=$ | [equal to]{.se-flip} |
+| $\neq$ | [not equal to]{.se-flip} |
+| $\approx$ | [is approximately equal to]{.se-flip} |
+| $\infty$ | [infinity]{.se-flip} |
+| $\propto$ | [is proportional to]{.se-flip} |
+| $\therefore$ | [therefore]{.se-flip} |
+| $\because$ | [because]{.se-flip} |
+| $<$ | [less than]{.se-flip} |
+| $>$ | [greater than]{.se-flip} |
+| $\le$ | [less than or equal to]{.se-flip} |
+| $\ge$ | [greater than or equal to]{.se-flip} |
+| $\implies$ | [implies]{.se-flip} |
+| $:$ | [such that]{.se-flip} |
+| $\forall$ | [for all]{.se-flip} |
 
-Work through this proof one line at a time. After each line, stop and self-explain it, in your head or on paper. Then use **Compare my thinking** to check your explanation against some examples before moving on. The proof builds up in the pinned panel at the side (📌) as you go.
+### Set notation
 
-::: {.se-steps}
-::: {.se-step}
-::: {.se-line}
-**Proof**. Assume, to the contrary, that there exists a smallest positive real number.
-:::
-::: {.se-prompt}
-What kind of proof is this, and what exactly is being assumed?
-:::
-::: {.se-guide}
-::: {.se-good}
-- "This is proof by contradiction: we assume the theorem is false, that there *is* a smallest positive real number, and hope to reach something impossible."
-:::
-::: {.se-bad}
-- "We assume there is a smallest positive real number." *(paraphrasing)*
-- "OK, that's the assumption." *(monitoring)*
-:::
-:::
-:::
+| Symbol | Meaning |
+|:-------:|:-----------------------|
+| $\in$ | [is an element of]{.se-flip} |
+| $\notin$ | [is not an element of]{.se-flip} |
+| $\subset$ | [is a subset of]{.se-flip} |
+| $\emptyset$ | [the empty set]{.se-flip} |
+| $A'$ | [the complement of $A$]{.se-flip} |
+| $\mathbb{N}$ | [the natural numbers]{.se-flip} |
+| $\mathbb{Z}$ | [the integers]{.se-flip} |
+| $\mathbb{R}$ | [the real numbers]{.se-flip} |
+| $\mathbb{Q}$ | [the rational numbers]{.se-flip} |
+| $\mathbb{C}$ | [the complex numbers]{.se-flip} |
+| $\cup$ | [union]{.se-flip} |
+| $\cap$ | [intersection]{.se-flip} |
 
-::: {.se-step}
-::: {.se-line}
-Therefore, by assumption, there exists a real number $r$ such that for every positive number $s$, $0 < r < s$.
-:::
-::: {.se-prompt}
-How is the assumption of a smallest positive real number used?
-:::
-::: {.se-guide}
-::: {.se-good}
-- "$0 < r$ says $r$ is positive, and $r < s$ for every positive $s$ says nothing positive is smaller than $r$: we are defining $r$ as the smallest positive real number."
-- "If I take $s = r$ I'd get $r < r$, which is false, so this must really mean every positive $s$ *other than* $r$."
-:::
-::: {.se-bad}
-- "There's a number $r$ that is less than every $s$." *(paraphrasing)*
-- "Lots of symbols, but I think I follow." *(monitoring)*
-:::
-:::
-:::
+### Series notation
 
-::: {.se-step}
-::: {.se-line}
-Consider $m = \dfrac{r}{2}$.
-:::
-::: {.se-prompt}
-Why might the proof choose $\dfrac{r}{2}$? What is it trying to build?
-:::
-::: {.se-guide}
-::: {.se-good}
-- "To contradict $r$ being the smallest, we need a positive number smaller than $r$. Halving $r$ is a simple way to get one."
-- "Any number strictly between $0$ and $r$ would work, for example $\dfrac{r}{3}$, $\dfrac{r}{10}$, $\dfrac{3r}{4}$ or $\dfrac{r}{1000}$, so halving is just the simplest choice."
-:::
-::: {.se-bad}
-- "$m$ is half of $r$." *(paraphrasing)*
-- "Not sure where that came from." *(monitoring, a good signal to stop and think, but not an explanation)*
-:::
-:::
+| Symbol | Meaning |
+|:-------:|:-----------------------|
+| $\sum$ | [sum of]{.se-flip} |
+| $\sum_{i=1}^{n} a_i$ | [$a_1 + a_2 + \dots + a_n$]{.se-flip} |
+| $\prod$ | [product of]{.se-flip} |
+| $\prod_{i=1}^{n} a_i$ | [$a_1 \times a_2 \times \dots \times a_n$]{.se-flip} |
+| $n!$ | [$n$ factorial $= n \times (n-1) \times \dots \times 2 \times 1$]{.se-flip} |
+| $\binom{n}{k}$ | [$n$ choose $k$ (the binomial coefficient)]{.se-flip} |
+| ${}^{n}C_{k}$ | [$n$ choose $k$ (the binomial coefficient)]{.se-flip} |
+
+### Function notation
+
+| Symbol | Meaning |
+|:-------:|:-----------------------|
+| $f: x \mapsto y$ | [the function $f$ maps $x$ onto $y$]{.se-flip} |
+| $f^{-1}$ | [the inverse of $f$]{.se-flip} |
+| $\displaystyle\lim_{x \to \infty} f(x)$ | [the limit of $f(x)$ as $x$ tends to infinity]{.se-flip} |
+
+::: {.se-box}
+**Remember:** choice of notation is often cultural or simply personal preference. If your lecturer uses something you don't recognise, it is okay to ask.
 :::
 
-::: {.se-step}
-::: {.se-line}
-Clearly, $0 < m < r$.
-:::
-::: {.se-prompt}
-The proof says "clearly". Can you justify *each* inequality?
-:::
-::: {.se-guide}
-::: {.se-good}
-- "$r > 0$, and half of a positive number is positive, so $m > 0$."
-:::
-::: {.se-bad}
-- "Yes, that's obvious." *(monitoring)*
-- "$m$ is between $0$ and $r$." *(paraphrasing)*
-:::
-:::
-:::
-
-::: {.se-step}
-::: {.se-line}
-This is a contradiction since $m$ is a positive real number that is smaller than $r$.
-:::
-::: {.se-prompt}
-Which earlier line does this contradict, and exactly how?
-:::
-::: {.se-guide}
-::: {.se-good}
-- "We defined $r$ as the smallest positive real number, but $m$ is a positive real number that is even smaller than $r$, so $r$ can't be the smallest after all."
-:::
-::: {.se-bad}
-- "So there's a contradiction." *(paraphrasing)*
-- "Good, that's the contradiction we wanted." *(monitoring)*
-:::
-:::
-:::
-
-::: {.se-step}
-::: {.se-line}
-Thus there is no smallest positive real number.
-:::
-::: {.se-prompt}
-Why does reaching a contradiction prove the theorem?
-:::
-::: {.se-guide}
-::: {.se-good}
-- "Assuming a smallest positive real number exists led to something impossible, so that assumption must be false. That is exactly what the theorem says."
-:::
-::: {.se-bad}
-- "Done, the theorem is proved." *(monitoring)*
-- "There isn't a smallest positive real number." *(paraphrasing)*
-:::
-:::
-:::
-:::
-
-## Practice Proof 2 {.se-theme-gold .se-pin-pp2}
-
-::: {.se-subtitle}
-**Theorem.** The product of two distinct primes is not abundant.
-:::
-
-Work through this proof one line at a time. After each line, stop and self-explain it, in your head or on paper. Then use **Compare my thinking** to check your explanation against some examples before moving on. The proof builds up in the pinned panel at the side (📌) as you go.
-
-::: {.se-box .se-precheck}
-::: {.se-prompt}
-do I know what an *abundant* number is? If not, look it up before reading the proof.
-:::
-::: {.se-reveal data-label="Show the definition"}
-**Definition.** An abundant number is a positive integer $n$ whose divisors add up to more than $2n$. For example, 12 is abundant because $1 + 2 + 3 + 4 + 6 + 12 > 24$.
-:::
-:::
-
-::: {.se-steps}
-::: {.se-step}
-::: {.se-line}
-**Proof.** Let $n = p_1p_2$ where $p_1$ and $p_2$ are distinct primes.
-:::
-::: {.se-prompt}
-What is being set up here? Can you think of some examples of $n$?
-:::
-::: {.se-guide}
-::: {.se-good}
-- "$n$ is being defined as the product of two different prime numbers, so $n$ can't be a prime or a square number, e.g. $6 = 2 \times 3$, $15 = 3 \times 5$, $35 = 5 \times 7$."
-:::
-::: {.se-bad}
-- "$n$ is $p_1$ times $p_2$." *(paraphrasing)*
-:::
-:::
-:::
-
-::: {.se-step}
-::: {.se-line}
-Assume that $2 \leq p_1$ and $3 \leq p_2$.
-:::
-::: {.se-prompt}
-Why is the proof allowed to assume this? Is anything lost?
-:::
-::: {.se-guide}
-::: {.se-good}
-- "Every prime is at least 2. The primes are different, so we can call the smaller one $p_1$. Then $p_2 > p_1 \geq 2$, so $p_2 \geq 3$. Nothing is lost."
-:::
-::: {.se-bad}
-- "$p_1$ is at least 2 and $p_2$ is at least 3." *(paraphrasing)*
-- "OK, fine." *(monitoring)*
-:::
-:::
-:::
-
-::: {.se-step}
-::: {.se-line}
-The divisors of $n$ are $1$, $p_1$, $p_2$ and $p_1p_2$.
-:::
-::: {.se-prompt}
-How do we know there are no other divisors?
-:::
-::: {.se-guide}
-::: {.se-good}
-- "Any divisor of $p_1p_2$ must be a product of some of its prime factors. Using neither gives $1$, using one gives $p_1$ or $p_2$, and using both gives $p_1p_2$, so there are no others. These four are all different because $p_1 \neq p_2$."
-- "Check my example: $15$ has divisors $1, 3, 5, 15$."
-:::
-::: {.se-bad}
-- "$n$ has four divisors." *(paraphrasing)*
-:::
-:::
-:::
-
-::: {.se-step}
-::: {.se-line}
-Note that $\dfrac{p_1 + 1}{p_1 - 1}$ is a decreasing function of $p_1$.
-:::
-::: {.se-prompt}
-What is a decreasing function, and is $\dfrac{p_1 + 1}{p_1 - 1}$ decreasing?
-:::
-::: {.se-guide}
-::: {.se-good}
-- "A function is decreasing if a larger input always gives a smaller output: whenever $a < b$, $f(a) > f(b)$. Trying values, $p_1 = 2$ gives $3$, $p_1 = 3$ gives $2$ and $p_1 = 5$ gives $\tfrac{3}{2}$, so it looks decreasing."
-- "To be sure, rewrite it as $1 + \dfrac{2}{p_1 - 1}$. As $p_1$ increases, $p_1 - 1$ increases, so $\dfrac{2}{p_1 - 1}$ decreases, and so does the whole fraction."
-:::
-::: {.se-bad}
-- "The fraction goes down as $p_1$ goes up." *(paraphrasing)*
-- "It's decreasing because $p_1 = 2$ gives $3$ and $p_1 = 3$ gives $2$." *(not enough: two values can't show it decreases for every $p_1$)*
-:::
-:::
-::: {.se-prompt}
-Why do you think $\dfrac{p_1 + 1}{p_1 - 1}$ was selected?
-:::
-::: {.se-guide}
-::: {.se-good}
-- "It isn't obvious yet. Looking ahead, the proof turns this fraction into the final inequality about the divisors, so it was probably found by working backwards."
-- "Working backwards from $1 + p_1 + p_2 + p_1p_2 \leq 2p_1p_2$: subtract $p_1p_2$ to get $1 + p_1 + p_2 \leq p_1p_2$, which rearranges to $p_1 + 1 \leq p_2(p_1 - 1)$. Dividing by $p_1 - 1$ gives $\dfrac{p_1 + 1}{p_1 - 1} \leq p_2$, so this fraction is exactly what needs controlling."
-:::
-::: {.se-bad}
-- "Where did that come from?" *(monitoring, fine as a first reaction, but then try to answer it)*
-- "It was chosen because it's a decreasing function." *(circular: that's a property it happens to have, not why it's needed)*
-:::
-:::
-:::
-
-::: {.se-step}
-::: {.se-line}
-So $\max\left\{\dfrac{p_1 + 1}{p_1 - 1}\right\} = \dfrac{2 + 1}{2 - 1} = 3$.
-:::
-::: {.se-prompt}
-Why is the maximum found by putting $p_1 = 2$?
-:::
-::: {.se-guide}
-::: {.se-good}
-- "A decreasing function attains its maximum value at the smallest input in its domain. From the second line, the smallest value $p_1$ can take is $2$, so the fraction is never more than $3$."
-:::
-::: {.se-bad}
-- "The maximum is 3." *(paraphrasing)*
-:::
-:::
-:::
-
-::: {.se-step}
-::: {.se-line}
-Hence $\dfrac{p_1 + 1}{p_1 - 1} \leq p_2$.
-:::
-::: {.se-prompt}
-Which two earlier facts combine to give this?
-:::
-::: {.se-guide}
-::: {.se-good}
-- "The fraction is at most $3$ (previous line) and $p_2 \geq 3$ (second line), so the fraction $\leq 3 \leq p_2$."
-:::
-::: {.se-bad}
-- "The fraction is at most $p_2$ because $p_2$ is bigger than $p_1$." *(incorrect reasoning: the fraction can be bigger than $p_1$; when $p_1 = 2$ it equals $3$)*
-:::
-:::
-:::
-
-::: {.se-step}
-::: {.se-line}
-So $p_1 + 1 \leq p_1p_2 - p_2$.
-:::
-::: {.se-prompt}
-What has been done to both sides, and why is it allowed?
-:::
-::: {.se-guide}
-::: {.se-good}
-- "Both sides were multiplied by $p_1 - 1$. This keeps the inequality the same way round because $p_1 \geq 2$, so $p_1 - 1$ is positive. The right side is $p_2(p_1 - 1) = p_1p_2 - p_2$."
-:::
-::: {.se-bad}
-- "The inequality has been rearranged." *(paraphrasing)*
-:::
-:::
-:::
-
-::: {.se-step}
-::: {.se-line}
-So $p_1 + 1 + p_2 \leq p_1p_2$.
-:::
-::: {.se-prompt}
-What single step gets from the previous line to this one?
-:::
-::: {.se-guide}
-::: {.se-good}
-- "$p_2$ has been added to both sides, which doesn't affect the inequality."
-:::
-::: {.se-bad}
-- "It's been rearranged again." *(too vague: it doesn't say what was done or why it's allowed)*
-:::
-:::
-:::
-
-::: {.se-step}
-::: {.se-line}
-So $1 + p_1 + p_2 + p_1p_2 \leq 2p_1p_2$.
-:::
-::: {.se-prompt}
-Why add $p_1p_2$? What do the two sides now represent?
-:::
-::: {.se-guide}
-::: {.se-good}
-- "Adding $p_1p_2$ to both sides makes the left side the sum of the divisors, and the right side $2n$."
-:::
-::: {.se-bad}
-- "The left side adds up the divisors of $n$, apart from $n$ itself." *(incorrect: $p_1p_2$ is $n$, so it is included)*
-:::
-:::
-:::
-
-::: {.se-step}
-::: {.se-line}
-Thus $n$ is not abundant.
-:::
-::: {.se-prompt}
-How does the previous line connect to the definition of abundant?
-:::
-::: {.se-guide}
-::: {.se-good}
-- "Abundant means the divisors add up to *more than* $2n$. We've shown they add up to *at most* $2n$, so $n$ isn't abundant. Since $p_1$ and $p_2$ were any distinct primes, this is true for every such product."
-- "Check example: $6$ has divisor sum $1 + 2 + 3 + 6 = 12 = 2 \times 6$, which is not *more than* $12$."
-:::
-::: {.se-bad}
-- "So it's not abundant." *(paraphrasing)*
-- "Finished!" *(monitoring)*
-:::
-:::
-:::
-:::
