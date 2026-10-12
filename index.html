@@ -3082,7 +3082,7 @@ color: var(--se-accent); cursor: pointer; font: inherit; font-size: .9rem; }
 body { counter-reset: seq; }
 .se-quiz { counter-increment: seq; border: 1px solid #d0d7de; border-left: 5px solid var(--se-accent);
 border-radius: 6px; padding: 1rem 1.25rem; margin: 1rem 0; }
-.se-quiz::before { content: "Question " counter(seq); display: block; font-size: .8rem; font-weight: 600;
+.se-quiz::before { content: "Test yourself " counter(seq); display: block; font-size: .8rem; font-weight: 600;
 text-transform: uppercase; letter-spacing: .04em; color: var(--se-accent); margin-bottom: .4rem; }
 .se-quiz > p:first-of-type { margin-bottom: .75rem; }
 button.se-option { margin: 0 .5rem .5rem 0; padding: .4rem .9rem; border-radius: 999px;
@@ -3097,15 +3097,14 @@ button.se-option:disabled { cursor: default; }
 .se-feedback { display: none; margin-top: .5rem; padding-top: .6rem; border-top: 1px dashed #d0d7de; }
 .se-feedback p { margin-bottom: 0; }
 .se-quiz.solved .se-feedback { display: block; }
-.se-score { font-weight: 600; color: var(--se-accent); margin: .5rem 0 0 0; }
 
-button.se-flip { padding: .15rem .8rem; border-radius: 999px; border: 1px solid var(--se-accent); background: #fff;
-color: var(--se-accent); cursor: pointer; font: inherit; font-size: .9rem; }
-button.se-flip:hover { background: var(--se-accent-soft); }
-.se-flip-shown { display: inline; }
-.se-flip-shown .se-hide { margin-left: .5rem; font-size: .75rem; border: none; background: none; color: var(--se-muted);
-cursor: pointer; text-decoration: underline; }
-.se-dict-controls { display: flex; gap: .5rem; margin: .5rem 0 1rem; }
+.se-callout { border: 1px solid #d0d7de; border-left: 5px solid var(--se-accent); border-radius: 6px;
+background: var(--se-accent-tint); padding: .85rem 1.25rem; margin: 1.25rem 0; }
+.se-callout::before { content: attr(data-title); display: block; font-size: .8rem; font-weight: 600;
+text-transform: uppercase; letter-spacing: .04em; color: var(--se-accent); margin-bottom: .35rem; }
+.se-callout > :last-child { margin-bottom: 0; }
+
+.se-sym { font-family: "Cambria Math", "STIX Two Math", "Latin Modern Math", "Times New Roman", serif; font-size: 1.25em; }
 
 .se-footer { max-width: 900px; margin: 3rem auto 2rem auto; padding: 1rem 1.5rem; background: #f5f7f9;
 border-top: 5px solid #475569; border-radius: 8px; font-size: .9rem; color: #374151; }
@@ -3114,7 +3113,7 @@ border-top: 5px solid #475569; border-radius: 8px; font-size: .9rem; color: #374
 
 @media print {
 .se-collapsed > .se-sec-body, .se-feedback, .se-reveal { display: block !important; }
-.se-sec-controls, .se-reveal-btn, .se-chev, .se-dict-controls, .se-hide { display: none !important; }
+.se-sec-controls, .se-reveal-btn, .se-chev { display: none !important; }
 }
 </style>
 <noscript><style>.se-reveal, .se-feedback { display: block !important; }</style></noscript>
@@ -3165,7 +3164,7 @@ border-top: 5px solid #475569; border-radius: 8px; font-size: .9rem; color: #374
       h.addEventListener("keydown", function (e) {
         if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setOpen(sec, sec.classList.contains("se-collapsed")); }
       });
-      setOpen(sec, false);
+      setOpen(sec, classes.indexOf("se-open") !== -1);
     });
     if (sections.length) {
       var ctl = document.createElement("div"); ctl.className = "se-sec-controls";
@@ -3188,18 +3187,9 @@ border-top: 5px solid #475569; border-radius: 8px; font-size: .9rem; color: #374
     window.addEventListener("hashchange", function () { openFor(decodeURIComponent(location.hash.slice(1))); });
     if (location.hash) openFor(decodeURIComponent(location.hash.slice(1)));
 
-    /* ---- Questions: wrong answers struck out, right answer reveals feedback, running score ---- */
+    /* ---- Test yourself: wrong answers struck out, right answer reveals feedback ---- */
     var quizzes = document.querySelectorAll(".se-quiz");
-    var scoreEls = document.querySelectorAll(".se-score");
-    var score = 0, done = 0;
-    function updateScore() {
-      scoreEls.forEach(function (el) {
-        el.textContent = "Correct first time: " + score + " / " + quizzes.length +
-          (done === quizzes.length ? "  — all done!" : "");
-      });
-    }
     quizzes.forEach(function (quiz) {
-      var firstTry = true;
       quiz.querySelectorAll("span.se-option").forEach(function (span) {
         var btn = makeButton("", "se-option");
         btn.innerHTML = span.innerHTML;
@@ -3211,19 +3201,14 @@ border-top: 5px solid #475569; border-radius: 8px; font-size: .9rem; color: #374
             btn.classList.add("right");
             quiz.classList.add("solved");
             quiz.querySelectorAll("button.se-option").forEach(function (b) { b.disabled = true; });
-            if (firstTry) score++;
-            done++;
-            updateScore();
             typeset(quiz);
           } else {
-            firstTry = false;
             btn.classList.add("wrong");
             btn.disabled = true;
           }
         });
       });
     });
-    updateScore();
 
     /* ---- Ask yourself: reveal the answer ---- */
     document.querySelectorAll(".se-precheck").forEach(function (box) {
@@ -3239,27 +3224,6 @@ border-top: 5px solid #475569; border-radius: 8px; font-size: .9rem; color: #374
       });
     });
 
-    /* ---- Dictionary: say the meaning, then reveal it ---- */
-    var flips = [];
-    document.querySelectorAll("span.se-flip").forEach(function (span) {
-      var wrap = document.createElement("span");
-      var btn = makeButton("Reveal", "se-flip");
-      var shown = document.createElement("span"); shown.className = "se-flip-shown"; shown.hidden = true;
-      shown.innerHTML = span.innerHTML;
-      var hide = makeButton("hide", "se-hide"); shown.appendChild(hide);
-      wrap.appendChild(btn); wrap.appendChild(shown);
-      span.replaceWith(wrap);
-      function set(open) { btn.hidden = open; shown.hidden = !open; if (open) typeset(shown); }
-      btn.addEventListener("click", function () { set(true); });
-      hide.addEventListener("click", function () { set(false); });
-      flips.push(set);
-    });
-    document.querySelectorAll(".se-dict-controls").forEach(function (box) {
-      var all = makeButton("Reveal all", "se-reveal-btn"), none = makeButton("Hide all", "se-reveal-btn");
-      all.addEventListener("click", function () { flips.forEach(function (f) { f(true); }); });
-      none.addEventListener("click", function () { flips.forEach(function (f) { f(false); }); });
-      box.appendChild(all); box.appendChild(none);
-    });
   });
 </script>
 
@@ -3312,7 +3276,8 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul class="collapse">
-  <li><a href="#numbers-and-calculations" id="toc-numbers-and-calculations" class="nav-link active" data-scroll-target="#numbers-and-calculations">Numbers and calculations</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#numbers-and-calculations" id="toc-numbers-and-calculations" class="nav-link" data-scroll-target="#numbers-and-calculations">Numbers and calculations</a></li>
   <li><a href="#calculus" id="toc-calculus" class="nav-link" data-scroll-target="#calculus">Calculus</a></li>
   <li><a href="#exponentials" id="toc-exponentials" class="nav-link" data-scroll-target="#exponentials">Exponentials</a></li>
   <li><a href="#vectors" id="toc-vectors" class="nav-link" data-scroll-target="#vectors">Vectors</a></li>
@@ -3345,20 +3310,17 @@ window.Quarto = {
 </header>
 
 
+<section id="introduction" class="level2 se-theme-slate se-open">
+<h2 class="se-theme-slate se-open anchored" data-anchor-id="introduction">Introduction</h2>
 <p>There are lots of different ways of writing maths that are equivalent and can be used interchangeably. This can be confusing if your lecturer uses a different notation than you are used to.</p>
 <p>The reason that there are different ways to say the same thing in maths is because mathematical notation has been developed over many thousands of years by many different people.</p>
+<div class="se-callout" data-title="Did you know?">
 <p>In English ‘big’ (from Middle English) and ‘large’ (from Latin) mean the same thing. There are similar examples in maths.</p>
-<div class="se-box">
-<p><strong>The most important thing to remember</strong> is that choice of notation is often cultural or simply personal preference, and therefore it is okay to ask for clarification.</p>
 </div>
-<div class="se-box se-precheck">
-<div class="se-prompt">
-<p>how many ways do I know of writing “<span class="math inline">\(a\)</span> multiplied by <span class="math inline">\(b\)</span>”? Write them down before you open the first section.</p>
+<div class="se-callout" data-title="Remember">
+<p>Choice of notation is often cultural or simply personal preference. If your lecturer uses something you don’t recognise, it is okay to ask.</p>
 </div>
-<div class="se-reveal" data-label="Compare">
-<p><span class="math inline">\(a \times b = a \cdot b = ab = a(b) = (a)b = (a)(b)\)</span></p>
-</div>
-</div>
+</section>
 <section id="numbers-and-calculations" class="level2 se-theme-teal">
 <h2 class="se-theme-teal anchored" data-anchor-id="numbers-and-calculations">Numbers and calculations</h2>
 <section id="division-and-multiplication" class="level3">
@@ -3372,13 +3334,6 @@ window.Quarto = {
 <p><span class="math display">\[
 a \times b = a \cdot b = ab = a(b) = (a)b = (a)(b)
 \]</span></p>
-<div class="se-quiz">
-<p>Which of these is <strong>not</strong> another way of writing <span class="math inline">\(\frac{7}{3}\)</span>?</p>
-<p><span class="se-option"><span class="math inline">\(7 \div 3\)</span></span> <span class="se-option"><span class="math inline">\(7/3\)</span></span> <span class="se-option" data-correct="true"><span class="math inline">\(3 \div 7\)</span></span> <span class="se-option"><span class="math inline">\(\tfrac{7}{3}\)</span></span></p>
-<div class="se-feedback">
-<p><span class="math inline">\(3 \div 7 = \frac{3}{7}\)</span>. The order matters: the number written first (or on top) is the one being divided.</p>
-</div>
-</div>
 </section>
 <section id="dots-and-commas" class="level3">
 <h3 class="anchored" data-anchor-id="dots-and-commas">Dots and commas</h3>
@@ -3407,21 +3362,6 @@ a \times b = a \cdot b = ab = a(b) = (a)b = (a)(b)
 &amp; = 2.145.600
 \end{array}
 \]</span></p>
-<div class="se-quiz">
-<p>Your lecturer writes <span class="math inline">\(4 \cdot 5\)</span> on the board. What does it mean?</p>
-<p><span class="se-option">It is definitely <span class="math inline">\(4.5\)</span></span> <span class="se-option">It is definitely <span class="math inline">\(20\)</span></span> <span class="se-option" data-correct="true">It could be either; check the context or ask</span></p>
-<div class="se-feedback">
-<p>A raised dot can be a decimal point or a multiplication sign. Look at how it is used elsewhere in the lecture, and if you are still unsure, ask.</p>
-</div>
-</div>
-<div class="se-box se-precheck">
-<div class="se-prompt">
-<p>what number is <span class="math inline">\(1.000\)</span>?</p>
-</div>
-<div class="se-reveal" data-label="Check">
-<p>To most people in the UK <span class="math inline">\(1.000\)</span> is “one”. In much of Europe it would be read as “one thousand”. This is why it is worth asking when you aren’t sure.</p>
-</div>
-</div>
 </section>
 </section>
 <section id="calculus" class="level2 se-theme-blue">
@@ -3484,29 +3424,58 @@ a \times b = a \cdot b = ab = a(b) = (a)b = (a)(b)
 </section>
 <section id="equivalent-ways-of-showing-differentiation" class="level3">
 <h3 class="anchored" data-anchor-id="equivalent-ways-of-showing-differentiation">Equivalent ways of showing differentiation</h3>
-<p>Each column below shows the same idea written in a different notation.</p>
-<p><span class="math display">\[
-\begin{array}{llllllll}
-\textbf{function} &amp; f(x)= x^2 &amp; y= x^2 &amp; y = x^2 &amp; u^2 &amp; v = z^2 &amp; s = t^2 &amp; f(x) = x^2 \\
-&amp; \color{orange}{\downarrow} &amp; \color{blue}{\downarrow} &amp; \color{green}{\downarrow} &amp; \color{red}{\downarrow} &amp; \color{purple}{\downarrow} &amp; \color{olive}{\downarrow} &amp; \color{magenta}{\downarrow} \\
-\textbf{derivative} &amp; f&#39;(x)= 2x &amp; \frac{dy}{dx}=2x &amp; y&#39; = 2x &amp; \frac{d(u^2)}{du}=2u &amp; \frac{d}{dz}v = 2z &amp; \dot{s} = 2t &amp; D(f) = 2x \\
-&amp; \color{orange}{\downarrow} &amp; \color{blue}{\downarrow} &amp; \color{green}{\downarrow} &amp; \color{red}{\downarrow} &amp; \color{purple}{\downarrow} &amp; \color{olive}{\downarrow} &amp; \color{magenta}{\downarrow}\\
-\textbf{second derivative} &amp; f&#39;&#39;(x) = 2 &amp; \frac{d^2y}{dx^2}=2 &amp; y&#39;&#39; = 2 &amp; \frac{d^2(u^2)}{du^2}=2 &amp; \frac{d^2}{dz^2}v = 2 &amp; \ddot{s} = 2 &amp; D^2(f) = 2
-\end{array}
-\]</span></p>
+<p>Each row below shows the same idea written in a different notation.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Function</th>
+<th style="text-align: center;">Derivative</th>
+<th style="text-align: center;">Second derivative</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(f(x) = x^2\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(f&#39;(x) = 2x\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(f&#39;&#39;(x) = 2\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(y = x^2\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\dfrac{dy}{dx} = 2x\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\dfrac{d^2y}{dx^2} = 2\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(y = x^2\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(y&#39; = 2x\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(y&#39;&#39; = 2\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(u^2\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\dfrac{d(u^2)}{du} = 2u\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\dfrac{d^2(u^2)}{du^2} = 2\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(v = z^2\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\dfrac{d}{dz}v = 2z\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\dfrac{d^2}{dz^2}v = 2\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(s = t^2\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\dot{s} = 2t\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\ddot{s} = 2\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(f(x) = x^2\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(D(f) = 2x\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(D^2(f) = 2\)</span></td>
+</tr>
+</tbody>
+</table>
 <div class="se-quiz">
-<p>If <span class="math inline">\(s = t^3\)</span>, which of these is the second derivative written in the same notation as the <span class="math inline">\(\color{olive}{\text{olive}}\)</span> column?</p>
+<p>In the table, <span class="math inline">\(s = t^2\)</span> gives <span class="math inline">\(\dot{s} = 2t\)</span> and <span class="math inline">\(\ddot{s} = 2\)</span>. Using the same notation, what is the second derivative of <span class="math inline">\(s = t^3\)</span>?</p>
 <p><span class="se-option"><span class="math inline">\(s&#39;&#39; = 6t\)</span></span> <span class="se-option" data-correct="true"><span class="math inline">\(\ddot{s} = 6t\)</span></span> <span class="se-option"><span class="math inline">\(\dot{s} = 3t^2\)</span></span> <span class="se-option"><span class="math inline">\(D^2(s) = 6t\)</span></span></p>
 <div class="se-feedback">
 <p>Dot notation: one dot for the first derivative, two dots for the second. The other options are also correct values, but written in different notations; <span class="math inline">\(\dot{s} = 3t^2\)</span> is the first derivative.</p>
-</div>
-</div>
-<div class="se-box se-precheck">
-<div class="se-prompt">
-<p>which notation for differentiation did I use most at school or college? Which ones in the table are new to me?</p>
-</div>
-<div class="se-reveal" data-label="Check">
-<p>If any are new, try rewriting <span class="math inline">\(\frac{dy}{dx} = 2x\)</span> from the table in each of the other notations.</p>
 </div>
 </div>
 </section>
@@ -3538,13 +3507,13 @@ a \times b = a \cdot b = ab = a(b) = (a)b = (a)(b)
 </tr>
 <tr class="odd">
 <td style="text-align: center;"><span class="math inline">\(dx\)</span></td>
-<td style="text-align: left;">“the differential”</td>
-<td style="text-align: left;">the change in <span class="math inline">\(x\)</span> when it approaches zero</td>
+<td style="text-align: left;">“dee x” or “the differential”</td>
+<td style="text-align: left;">a tiny change in <span class="math inline">\(x\)</span>: think of <span class="math inline">\(\Delta x\)</span> shrunk down until it’s infinitely small</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;"><span class="math inline">\(\partial x\)</span></td>
-<td style="text-align: left;">“the partial differential”</td>
-<td style="text-align: left;">the change in <span class="math inline">\(x\)</span> when it approaches zero</td>
+<td style="text-align: left;">“partial x” or “del x”</td>
+<td style="text-align: left;">used in partial derivatives such as <span class="math inline">\(\frac{\partial f}{\partial x}\)</span>: how <span class="math inline">\(f\)</span> changes when only <span class="math inline">\(x\)</span> changes and every other variable stays fixed</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"><span class="math inline">\(d(x,y)\)</span></td>
@@ -3553,13 +3522,6 @@ a \times b = a \cdot b = ab = a(b) = (a)b = (a)(b)
 </tr>
 </tbody>
 </table>
-<div class="se-quiz">
-<p>Which symbol means “the small change in <span class="math inline">\(x\)</span>”?</p>
-<p><span class="se-option"><span class="math inline">\(\Delta x\)</span></span> <span class="se-option" data-correct="true"><span class="math inline">\(\delta x\)</span></span> <span class="se-option"><span class="math inline">\(\partial x\)</span></span> <span class="se-option"><span class="math inline">\(d(x,y)\)</span></span></p>
-<div class="se-feedback">
-<p>Lowercase delta, <span class="math inline">\(\delta x\)</span>, is the small change. Uppercase delta, <span class="math inline">\(\Delta x\)</span>, is the change in <span class="math inline">\(x\)</span>. Both are said “delta x”, so watch the letter carefully.</p>
-</div>
-</div>
 </section>
 </section>
 <section id="exponentials" class="level2 se-theme-purple">
@@ -3574,35 +3536,26 @@ e^x = \exp(x) = \exp x
 <p><span class="math display">\[
 e^{\frac{2x^2}{3 - x}} = \exp\left(\frac{2x^2}{3 - x}\right)
 \]</span></p>
-<div class="se-quiz">
-<p>In <span class="math inline">\(2^5\)</span>, what is the 5 <strong>not</strong> called?</p>
-<p><span class="se-option">the power</span> <span class="se-option">the exponent</span> <span class="se-option">the index</span> <span class="se-option" data-correct="true">the base</span></p>
-<div class="se-feedback">
-<p>‘Power’, ‘exponent’ and ‘index’ all mean the same thing. The 2 is the base.</p>
-</div>
-</div>
 </section>
 <section id="vectors" class="level2 se-theme-orange">
 <h2 class="se-theme-orange anchored" data-anchor-id="vectors">Vectors</h2>
 <p>There are so many different notations that can be used for vectors, it can be very confusing.</p>
 <p>Vectors are often written in lowercase, and vertices are often uppercase.</p>
-<p>You can use a single letter to show a vector, or split it into its components.</p>
+<p>You can use a single letter to show a vector,</p>
 <p><span class="math display">\[
-\begin{array}{lllll}
-\overrightarrow{OA} &amp; = \mathbf{a} &amp; = \underset{\sim}{a} &amp; = \vec{a} &amp; = \underline{a}\\
-= (a_1, a_2) &amp; = (a_1 \ \ a_2) &amp; = \begin{pmatrix} a_1 \\ a_2 \end{pmatrix} &amp; = \begin{bmatrix} a_1 \\ a_2 \end{bmatrix} &amp;\\
-= a_1 \mathbf{i} + a_2 \mathbf{j} &amp; = a_1 \hat{i} + a_2 \hat{j} &amp; &amp; &amp;
-\end{array}
+\overrightarrow{OA} = \mathbf{a} = \underset{\sim}{a} = \vec{a} = \underline{a}
+\]</span></p>
+<p>or split it into its components,</p>
+<p><span class="math display">\[
+\mathbf{a} = (a_1, a_2) = (a_1 \ \ a_2) = \begin{pmatrix} a_1 \\ a_2 \end{pmatrix} = \begin{bmatrix} a_1 \\ a_2 \end{bmatrix}
+\]</span></p>
+<p><span class="math display">\[
+\mathbf{a} = a_1 \mathbf{i} + a_2 \mathbf{j} = a_1 \hat{i} + a_2 \hat{j}
 \]</span></p>
 <p><span class="math inline">\(\hat{a}\)</span> is usually reserved for the ‘unit vector in the direction of <span class="math inline">\(\vec{a}\)</span>’.</p>
-<div class="se-box">
-<p><strong>Watch out for pointy brackets</strong> though, as they are not used to show something is a vector, but for an operation involving two vectors (the inner product).</p>
-<p><span class="math display">\[
-\begin{array}{ll}
-\mathbf{a} = (a_1,a_2), \quad \mathbf{b} = (b_1,b_2) &amp; \text{are vectors}\\
-\langle \mathbf{a}, \mathbf{b} \rangle &amp; \text{is the inner product of the two vectors}
-\end{array}
-\]</span></p>
+<div class="se-callout" data-title="Watch out">
+<p>Pointy brackets are not used to show something is a vector, but for an operation involving two vectors (the inner product).</p>
+<p>If <span class="math inline">\(\mathbf{a} = (a_1, a_2)\)</span> and <span class="math inline">\(\mathbf{b} = (b_1, b_2)\)</span> are vectors, then <span class="math inline">\(\langle \mathbf{a}, \mathbf{b} \rangle\)</span> is the inner product of the two vectors.</p>
 </div>
 <div class="se-quiz">
 <p>Which of these is <strong>not</strong> a way of writing a vector?</p>
@@ -3636,7 +3589,7 @@ e^{\frac{2x^2}{3 - x}} = \exp\left(\frac{2x^2}{3 - x}\right)
 7 &amp; 8 &amp; 9
 \end{matrix}
 \]</span></p>
-<p>As a general rule matrices are written with uppercase letters, <span class="math inline">\(A\)</span>, and elements of a matrix are denoted with lowercase <span class="math inline">\(a\)</span>. Each element of the matrix can be written with a subscript, <span class="math inline">\(a_{ij}\)</span>, that tells you where it is located:</p>
+<p>A matrix is usually named with an uppercase letter, such as <span class="math inline">\(\mathbf{A}\)</span>. The numbers inside it are called its elements (or entries), and they are named with the matching lowercase letter. Each element has two subscripts: the first gives its row and the second gives its column, so <span class="math inline">\(a_{ij}\)</span> is the element in row <span class="math inline">\(i\)</span> and column <span class="math inline">\(j\)</span>. The subscripts may be written with or without a comma, <span class="math inline">\(a_{ij}\)</span> or <span class="math inline">\(a_{i,j}\)</span>.</p>
 <p><span class="math display">\[
 \mathbf{A} =
 \begin{pmatrix}
@@ -3644,10 +3597,7 @@ a_{1,1} &amp; a_{1,2} \\
 a_{2,1} &amp; a_{2,2}
 \end{pmatrix}
 \]</span></p>
-<p>Curly brackets are not generally used for matrices, but because they are used for set notation you could write a matrix using curly brackets:</p>
-<p><span class="math display">\[
-\mathbf{A} = \{a_{ij}\}
-\]</span></p>
+<p>A whole matrix can also be described by its general element in brackets, <span class="math inline">\(\mathbf{A} = (a_{ij})\)</span> or <span class="math inline">\(\mathbf{A} = [a_{ij}]\)</span>. You may occasionally see curly brackets, <span class="math inline">\(\mathbf{A} = \{a_{ij}\}\)</span>, but be careful: curly brackets usually mean a set, and the order of a set doesn’t matter, whereas the position of each element in a matrix does.</p>
 <div class="se-quiz">
 <p>In the matrix <span class="math inline">\(\mathbf{A}\)</span> at the top of this section, what is <span class="math inline">\(a_{2,3}\)</span>?</p>
 <p><span class="se-option"><span class="math inline">\(8\)</span></span> <span class="se-option" data-correct="true"><span class="math inline">\(6\)</span></span> <span class="se-option"><span class="math inline">\(2\)</span></span> <span class="se-option"><span class="math inline">\(3\)</span></span></p>
@@ -3658,8 +3608,8 @@ a_{2,1} &amp; a_{2,2}
 <section id="straight-lines" class="level3">
 <h3 class="anchored" data-anchor-id="straight-lines">Straight lines</h3>
 <p>Straight vertical lines are used for a property of the matrix, rather than the matrix itself.</p>
-<div class="se-box">
-<p><strong>Watch out:</strong> some lecturers’ handwriting makes it tricky to tell what style of line is intended! If in doubt, just ask for clarification.</p>
+<div class="se-callout" data-title="Watch out">
+<p>Some lecturers’ handwriting makes it tricky to tell what style of line is intended! If in doubt, just ask for clarification.</p>
 </div>
 <p>Single lines show the determinant of a matrix (telling you something about the scale factor when using the matrix to enlarge a vector).</p>
 <p><span class="math display">\[
@@ -3816,17 +3766,31 @@ a_{2,1} &amp; a_{2,2}
 <p>The 30 students are a sample, so their average is the sample mean, <span class="math inline">\(\bar{x}\)</span>. <span class="math inline">\(\mu\)</span> is reserved for the population mean.</p>
 </div>
 </div>
-<div class="se-score">
-
+<div class="se-quiz">
+<p>You roll a dice. How would you write “the probability that a 6 is rolled”?</p>
+<p><span class="se-option"><span class="math inline">\(P(x = 6)\)</span></span> <span class="se-option" data-correct="true"><span class="math inline">\(P(X = 6)\)</span></span> <span class="se-option"><span class="math inline">\(X = 6\)</span></span> <span class="se-option"><span class="math inline">\(x_6\)</span></span></p>
+<div class="se-feedback">
+<p>The random variable is named with an uppercase letter, <span class="math inline">\(X\)</span>, so the probability is <span class="math inline">\(P(X = 6)\)</span>. <span class="math inline">\(X = 6\)</span> on its own is the event, not its probability.</p>
+</div>
+</div>
+<div class="se-quiz">
+<p>You roll a dice three times. Which of these is the result of the <strong>second</strong> roll?</p>
+<p><span class="se-option"><span class="math inline">\(x^2\)</span></span> <span class="se-option"><span class="math inline">\(X_2\)</span></span> <span class="se-option" data-correct="true"><span class="math inline">\(x_2\)</span></span> <span class="se-option"><span class="math inline">\(P(X = 2)\)</span></span></p>
+<div class="se-feedback">
+<p>The results of the rolls are <span class="math inline">\(x_1, x_2, x_3\)</span>, so the second is <span class="math inline">\(x_2\)</span>. Watch out for <span class="math inline">\(x^2\)</span>, which means <span class="math inline">\(x\)</span> squared.</p>
+</div>
+</div>
+<div class="se-quiz">
+<p>A website reports the standard deviation of the heights of <strong>every</strong> adult in the UK. Which symbol fits best?</p>
+<p><span class="se-option"><span class="math inline">\(s\)</span></span> <span class="se-option" data-correct="true"><span class="math inline">\(\sigma\)</span></span> <span class="se-option"><span class="math inline">\(\bar{x}\)</span></span> <span class="se-option"><span class="math inline">\(\rho\)</span></span></p>
+<div class="se-feedback">
+<p>Every adult in the UK is the whole population, so the population standard deviation, <span class="math inline">\(\sigma\)</span>, fits. <span class="math inline">\(s\)</span> is the standard deviation of a sample.</p>
+</div>
 </div>
 </section>
 </section>
 <section id="dictionary" class="level2 se-theme-green">
 <h2 class="se-theme-green anchored" data-anchor-id="dictionary">Dictionary</h2>
-<p>Test yourself: say what each symbol means, then click <strong>Reveal</strong> to check.</p>
-<div class="se-dict-controls">
-
-</div>
 <section id="general-notation" class="level3">
 <h3 class="anchored" data-anchor-id="general-notation">General notation</h3>
 <table class="caption-top table">
@@ -3839,59 +3803,59 @@ a_{2,1} &amp; a_{2,2}
 <tbody>
 <tr class="odd">
 <td style="text-align: center;"><span class="math inline">\(=\)</span></td>
-<td style="text-align: left;"><span class="se-flip">equal to</span></td>
+<td style="text-align: left;">equal to</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;"><span class="math inline">\(\neq\)</span></td>
-<td style="text-align: left;"><span class="se-flip">not equal to</span></td>
+<td style="text-align: left;">not equal to</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"><span class="math inline">\(\approx\)</span></td>
-<td style="text-align: left;"><span class="se-flip">is approximately equal to</span></td>
+<td style="text-align: left;">is approximately equal to</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;"><span class="math inline">\(\infty\)</span></td>
-<td style="text-align: left;"><span class="se-flip">infinity</span></td>
+<td style="text-align: left;">infinity</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"><span class="math inline">\(\propto\)</span></td>
-<td style="text-align: left;"><span class="se-flip">is proportional to</span></td>
+<td style="text-align: left;">is proportional to</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;"><span class="math inline">\(\therefore\)</span></td>
-<td style="text-align: left;"><span class="se-flip">therefore</span></td>
+<td style="text-align: center;"><span class="se-sym">∴</span></td>
+<td style="text-align: left;">therefore</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;"><span class="math inline">\(\because\)</span></td>
-<td style="text-align: left;"><span class="se-flip">because</span></td>
+<td style="text-align: center;"><span class="se-sym">∵</span></td>
+<td style="text-align: left;">because</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;"><span class="math inline">\(&lt;\)</span></td>
-<td style="text-align: left;"><span class="se-flip">less than</span></td>
+<td style="text-align: left;">less than</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"><span class="math inline">\(&gt;\)</span></td>
-<td style="text-align: left;"><span class="se-flip">greater than</span></td>
+<td style="text-align: left;">greater than</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;"><span class="math inline">\(\le\)</span></td>
-<td style="text-align: left;"><span class="se-flip">less than or equal to</span></td>
+<td style="text-align: left;">less than or equal to</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"><span class="math inline">\(\ge\)</span></td>
-<td style="text-align: left;"><span class="se-flip">greater than or equal to</span></td>
+<td style="text-align: left;">greater than or equal to</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;"><span class="math inline">\(\implies\)</span></td>
-<td style="text-align: left;"><span class="se-flip">implies</span></td>
+<td style="text-align: left;">implies</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"><span class="math inline">\(:\)</span></td>
-<td style="text-align: left;"><span class="se-flip">such that</span></td>
+<td style="text-align: left;">such that</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;"><span class="math inline">\(\forall\)</span></td>
-<td style="text-align: left;"><span class="se-flip">for all</span></td>
+<td style="text-align: left;">for all</td>
 </tr>
 </tbody>
 </table>
@@ -3908,51 +3872,51 @@ a_{2,1} &amp; a_{2,2}
 <tbody>
 <tr class="odd">
 <td style="text-align: center;"><span class="math inline">\(\in\)</span></td>
-<td style="text-align: left;"><span class="se-flip">is an element of</span></td>
+<td style="text-align: left;">is an element of</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;"><span class="math inline">\(\notin\)</span></td>
-<td style="text-align: left;"><span class="se-flip">is not an element of</span></td>
+<td style="text-align: left;">is not an element of</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"><span class="math inline">\(\subset\)</span></td>
-<td style="text-align: left;"><span class="se-flip">is a subset of</span></td>
+<td style="text-align: left;">is a subset of</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;"><span class="math inline">\(\emptyset\)</span></td>
-<td style="text-align: left;"><span class="se-flip">the empty set</span></td>
+<td style="text-align: left;">the empty set</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"><span class="math inline">\(A&#39;\)</span></td>
-<td style="text-align: left;"><span class="se-flip">the complement of <span class="math inline">\(A\)</span></span></td>
+<td style="text-align: left;">the complement of <span class="math inline">\(A\)</span></td>
 </tr>
 <tr class="even">
 <td style="text-align: center;"><span class="math inline">\(\mathbb{N}\)</span></td>
-<td style="text-align: left;"><span class="se-flip">the natural numbers</span></td>
+<td style="text-align: left;">the natural numbers</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"><span class="math inline">\(\mathbb{Z}\)</span></td>
-<td style="text-align: left;"><span class="se-flip">the integers</span></td>
+<td style="text-align: left;">the integers</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;"><span class="math inline">\(\mathbb{R}\)</span></td>
-<td style="text-align: left;"><span class="se-flip">the real numbers</span></td>
+<td style="text-align: left;">the real numbers</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"><span class="math inline">\(\mathbb{Q}\)</span></td>
-<td style="text-align: left;"><span class="se-flip">the rational numbers</span></td>
+<td style="text-align: left;">the rational numbers</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;"><span class="math inline">\(\mathbb{C}\)</span></td>
-<td style="text-align: left;"><span class="se-flip">the complex numbers</span></td>
+<td style="text-align: left;">the complex numbers</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"><span class="math inline">\(\cup\)</span></td>
-<td style="text-align: left;"><span class="se-flip">union</span></td>
+<td style="text-align: left;">union</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;"><span class="math inline">\(\cap\)</span></td>
-<td style="text-align: left;"><span class="se-flip">intersection</span></td>
+<td style="text-align: left;">intersection</td>
 </tr>
 </tbody>
 </table>
@@ -3973,31 +3937,31 @@ a_{2,1} &amp; a_{2,2}
 <tbody>
 <tr class="odd">
 <td style="text-align: center;"><span class="math inline">\(\sum\)</span></td>
-<td style="text-align: left;"><span class="se-flip">sum of</span></td>
+<td style="text-align: left;">sum of</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;"><span class="math inline">\(\sum_{i=1}^{n} a_i\)</span></td>
-<td style="text-align: left;"><span class="se-flip"><span class="math inline">\(a_1 + a_2 + \dots + a_n\)</span></span></td>
+<td style="text-align: left;"><span class="math inline">\(a_1 + a_2 + \dots + a_n\)</span></td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"><span class="math inline">\(\prod\)</span></td>
-<td style="text-align: left;"><span class="se-flip">product of</span></td>
+<td style="text-align: left;">product of</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;"><span class="math inline">\(\prod_{i=1}^{n} a_i\)</span></td>
-<td style="text-align: left;"><span class="se-flip"><span class="math inline">\(a_1 \times a_2 \times \dots \times a_n\)</span></span></td>
+<td style="text-align: left;"><span class="math inline">\(a_1 \times a_2 \times \dots \times a_n\)</span></td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"><span class="math inline">\(n!\)</span></td>
-<td style="text-align: left;"><span class="se-flip"><span class="math inline">\(n\)</span> factorial <span class="math inline">\(= n \times (n-1) \times \dots \times 2 \times 1\)</span></span></td>
+<td style="text-align: left;"><span class="math inline">\(n\)</span> factorial <span class="math inline">\(= n \times (n-1) \times \dots \times 2 \times 1\)</span></td>
 </tr>
 <tr class="even">
 <td style="text-align: center;"><span class="math inline">\(\binom{n}{k}\)</span></td>
-<td style="text-align: left;"><span class="se-flip"><span class="math inline">\(n\)</span> choose <span class="math inline">\(k\)</span> (the binomial coefficient)</span></td>
+<td style="text-align: left;"><span class="math inline">\(n\)</span> choose <span class="math inline">\(k\)</span> (the binomial coefficient)</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"><span class="math inline">\({}^{n}C_{k}\)</span></td>
-<td style="text-align: left;"><span class="se-flip"><span class="math inline">\(n\)</span> choose <span class="math inline">\(k\)</span> (the binomial coefficient)</span></td>
+<td style="text-align: left;"><span class="math inline">\(n\)</span> choose <span class="math inline">\(k\)</span> (the binomial coefficient)</td>
 </tr>
 </tbody>
 </table>
@@ -4018,21 +3982,18 @@ a_{2,1} &amp; a_{2,2}
 <tbody>
 <tr class="odd">
 <td style="text-align: center;"><span class="math inline">\(f: x \mapsto y\)</span></td>
-<td style="text-align: left;"><span class="se-flip">the function <span class="math inline">\(f\)</span> maps <span class="math inline">\(x\)</span> onto <span class="math inline">\(y\)</span></span></td>
+<td style="text-align: left;">the function <span class="math inline">\(f\)</span> maps <span class="math inline">\(x\)</span> onto <span class="math inline">\(y\)</span></td>
 </tr>
 <tr class="even">
 <td style="text-align: center;"><span class="math inline">\(f^{-1}\)</span></td>
-<td style="text-align: left;"><span class="se-flip">the inverse of <span class="math inline">\(f\)</span></span></td>
+<td style="text-align: left;">the inverse of <span class="math inline">\(f\)</span></td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;"><span class="math inline">\(\displaystyle\lim_{x \to \infty} f(x)\)</span></td>
-<td style="text-align: left;"><span class="se-flip">the limit of <span class="math inline">\(f(x)\)</span> as <span class="math inline">\(x\)</span> tends to infinity</span></td>
+<td style="text-align: left;">the limit of <span class="math inline">\(f(x)\)</span> as <span class="math inline">\(x\)</span> tends to infinity</td>
 </tr>
 </tbody>
 </table>
-<div class="se-box">
-<p><strong>Remember:</strong> choice of notation is often cultural or simply personal preference. If your lecturer uses something you don’t recognise, it is okay to ask.</p>
-</div>
 </section>
 </section>
 

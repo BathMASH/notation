@@ -63,7 +63,7 @@ format:
           body { counter-reset: seq; }
           .se-quiz { counter-increment: seq; border: 1px solid #d0d7de; border-left: 5px solid var(--se-accent);
                      border-radius: 6px; padding: 1rem 1.25rem; margin: 1rem 0; }
-          .se-quiz::before { content: "Question " counter(seq); display: block; font-size: .8rem; font-weight: 600;
+          .se-quiz::before { content: "Test yourself " counter(seq); display: block; font-size: .8rem; font-weight: 600;
                              text-transform: uppercase; letter-spacing: .04em; color: var(--se-accent); margin-bottom: .4rem; }
           .se-quiz > p:first-of-type { margin-bottom: .75rem; }
           button.se-option { margin: 0 .5rem .5rem 0; padding: .4rem .9rem; border-radius: 999px;
@@ -78,16 +78,16 @@ format:
           .se-feedback { display: none; margin-top: .5rem; padding-top: .6rem; border-top: 1px dashed #d0d7de; }
           .se-feedback p { margin-bottom: 0; }
           .se-quiz.solved .se-feedback { display: block; }
-          .se-score { font-weight: 600; color: var(--se-accent); margin: .5rem 0 0 0; }
+          
+          /* ---------- Call-outs ---------- */
+          .se-callout { border: 1px solid #d0d7de; border-left: 5px solid var(--se-accent); border-radius: 6px;
+                        background: var(--se-accent-tint); padding: .85rem 1.25rem; margin: 1.25rem 0; }
+          .se-callout::before { content: attr(data-title); display: block; font-size: .8rem; font-weight: 600;
+                                text-transform: uppercase; letter-spacing: .04em; color: var(--se-accent); margin-bottom: .35rem; }
+          .se-callout > :last-child { margin-bottom: 0; }
 
-          /* ---------- Dictionary self-test ---------- */
-          button.se-flip { padding: .15rem .8rem; border-radius: 999px; border: 1px solid var(--se-accent); background: #fff;
-                           color: var(--se-accent); cursor: pointer; font: inherit; font-size: .9rem; }
-          button.se-flip:hover { background: var(--se-accent-soft); }
-          .se-flip-shown { display: inline; }
-          .se-flip-shown .se-hide { margin-left: .5rem; font-size: .75rem; border: none; background: none; color: var(--se-muted);
-                                    cursor: pointer; text-decoration: underline; }
-          .se-dict-controls { display: flex; gap: .5rem; margin: .5rem 0 1rem; }
+          /* Symbols written as text rather than LaTeX */
+          .se-sym { font-family: "Cambria Math", "STIX Two Math", "Latin Modern Math", "Times New Roman", serif; font-size: 1.25em; }
 
           /* ---------- Credits footer (always visible) ---------- */
           .se-footer { max-width: 900px; margin: 3rem auto 2rem auto; padding: 1rem 1.5rem; background: #f5f7f9;
@@ -98,7 +98,7 @@ format:
           /* Show everything when printing */
           @media print {
             .se-collapsed > .se-sec-body, .se-feedback, .se-reveal { display: block !important; }
-            .se-sec-controls, .se-reveal-btn, .se-chev, .se-dict-controls, .se-hide { display: none !important; }
+            .se-sec-controls, .se-reveal-btn, .se-chev { display: none !important; }
           }
         </style>
         <noscript><style>.se-reveal, .se-feedback { display: block !important; }</style></noscript>
@@ -149,7 +149,7 @@ format:
               h.addEventListener("keydown", function (e) {
                 if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setOpen(sec, sec.classList.contains("se-collapsed")); }
               });
-              setOpen(sec, false);
+              setOpen(sec, classes.indexOf("se-open") !== -1);
             });
             if (sections.length) {
               var ctl = document.createElement("div"); ctl.className = "se-sec-controls";
@@ -172,18 +172,9 @@ format:
             window.addEventListener("hashchange", function () { openFor(decodeURIComponent(location.hash.slice(1))); });
             if (location.hash) openFor(decodeURIComponent(location.hash.slice(1)));
 
-            /* ---- Questions: wrong answers struck out, right answer reveals feedback, running score ---- */
+            /* ---- Test yourself: wrong answers struck out, right answer reveals feedback ---- */
             var quizzes = document.querySelectorAll(".se-quiz");
-            var scoreEls = document.querySelectorAll(".se-score");
-            var score = 0, done = 0;
-            function updateScore() {
-              scoreEls.forEach(function (el) {
-                el.textContent = "Correct first time: " + score + " / " + quizzes.length +
-                  (done === quizzes.length ? "  — all done!" : "");
-              });
-            }
             quizzes.forEach(function (quiz) {
-              var firstTry = true;
               quiz.querySelectorAll("span.se-option").forEach(function (span) {
                 var btn = makeButton("", "se-option");
                 btn.innerHTML = span.innerHTML;
@@ -195,19 +186,14 @@ format:
                     btn.classList.add("right");
                     quiz.classList.add("solved");
                     quiz.querySelectorAll("button.se-option").forEach(function (b) { b.disabled = true; });
-                    if (firstTry) score++;
-                    done++;
-                    updateScore();
                     typeset(quiz);
                   } else {
-                    firstTry = false;
                     btn.classList.add("wrong");
                     btn.disabled = true;
                   }
                 });
               });
             });
-            updateScore();
 
             /* ---- Ask yourself: reveal the answer ---- */
             document.querySelectorAll(".se-precheck").forEach(function (box) {
@@ -223,48 +209,22 @@ format:
               });
             });
 
-            /* ---- Dictionary: say the meaning, then reveal it ---- */
-            var flips = [];
-            document.querySelectorAll("span.se-flip").forEach(function (span) {
-              var wrap = document.createElement("span");
-              var btn = makeButton("Reveal", "se-flip");
-              var shown = document.createElement("span"); shown.className = "se-flip-shown"; shown.hidden = true;
-              shown.innerHTML = span.innerHTML;
-              var hide = makeButton("hide", "se-hide"); shown.appendChild(hide);
-              wrap.appendChild(btn); wrap.appendChild(shown);
-              span.replaceWith(wrap);
-              function set(open) { btn.hidden = open; shown.hidden = !open; if (open) typeset(shown); }
-              btn.addEventListener("click", function () { set(true); });
-              hide.addEventListener("click", function () { set(false); });
-              flips.push(set);
-            });
-            document.querySelectorAll(".se-dict-controls").forEach(function (box) {
-              var all = makeButton("Reveal all", "se-reveal-btn"), none = makeButton("Hide all", "se-reveal-btn");
-              all.addEventListener("click", function () { flips.forEach(function (f) { f(true); }); });
-              none.addEventListener("click", function () { flips.forEach(function (f) { f(false); }); });
-              box.appendChild(all); box.appendChild(none);
-            });
           });
         </script>
 ---
+
+## Introduction {.se-theme-slate .se-open}
 
 There are lots of different ways of writing maths that are equivalent and can be used interchangeably. This can be confusing if your lecturer uses a different notation than you are used to.
 
 The reason that there are different ways to say the same thing in maths is because mathematical notation has been developed over many thousands of years by many different people.
 
+::: {.se-callout data-title="Did you know?"}
 In English 'big' (from Middle English) and 'large' (from Latin) mean the same thing. There are similar examples in maths.
-
-::: {.se-box}
-**The most important thing to remember** is that choice of notation is often cultural or simply personal preference, and therefore it is okay to ask for clarification.
 :::
 
-::: {.se-box .se-precheck}
-::: {.se-prompt}
-how many ways do I know of writing "$a$ multiplied by $b$"? Write them down before you open the first section.
-:::
-::: {.se-reveal data-label="Compare"}
-$a \times b = a \cdot b = ab = a(b) = (a)b = (a)(b)$
-:::
+::: {.se-callout data-title="Remember"}
+Choice of notation is often cultural or simply personal preference. If your lecturer uses something you don't recognise, it is okay to ask.
 :::
 
 ## Numbers and calculations {.se-theme-teal}
@@ -284,16 +244,6 @@ If you are working with vectors then it is important to distinguish between the 
 $$
 a \times b = a \cdot b = ab = a(b) = (a)b = (a)(b)
 $$
-
-::: {.se-quiz}
-Which of these is **not** another way of writing $\frac{7}{3}$?
-
-[$7 \div 3$]{.se-option} [$7/3$]{.se-option} [$3 \div 7$]{.se-option data-correct="true"} [$\tfrac{7}{3}$]{.se-option}
-
-::: {.se-feedback}
-$3 \div 7 = \frac{3}{7}$. The order matters: the number written first (or on top) is the one being divided.
-:::
-:::
 
 ### Dots and commas
 
@@ -329,25 +279,6 @@ $$
 \end{array}
 $$
 
-::: {.se-quiz}
-Your lecturer writes $4 \cdot 5$ on the board. What does it mean?
-
-[It is definitely $4.5$]{.se-option} [It is definitely $20$]{.se-option} [It could be either; check the context or ask]{.se-option data-correct="true"}
-
-::: {.se-feedback}
-A raised dot can be a decimal point or a multiplication sign. Look at how it is used elsewhere in the lecture, and if you are still unsure, ask.
-:::
-:::
-
-::: {.se-box .se-precheck}
-::: {.se-prompt}
-what number is $1.000$?
-:::
-::: {.se-reveal data-label="Check"}
-To most people in the UK $1.000$ is "one". In much of Europe it would be read as "one thousand". This is why it is worth asking when you aren't sure.
-:::
-:::
-
 ## Calculus {.se-theme-blue}
 
 ### Maths grammar
@@ -373,34 +304,25 @@ Choose the correct word: "To find the gradient, we need to ______ $y = 3x^2$."
 
 ### Equivalent ways of showing differentiation
 
-Each column below shows the same idea written in a different notation.
+Each row below shows the same idea written in a different notation.
 
-$$
-\begin{array}{llllllll}
-\textbf{function} & f(x)= x^2 & y= x^2 & y = x^2 & u^2 & v = z^2 & s = t^2 & f(x) = x^2 \\
- & \color{orange}{\downarrow} & \color{blue}{\downarrow} & \color{green}{\downarrow} & \color{red}{\downarrow} & \color{purple}{\downarrow} & \color{olive}{\downarrow} & \color{magenta}{\downarrow} \\
-\textbf{derivative} & f'(x)= 2x & \frac{dy}{dx}=2x & y' = 2x & \frac{d(u^2)}{du}=2u & \frac{d}{dz}v = 2z & \dot{s} = 2t & D(f) = 2x \\
- & \color{orange}{\downarrow} & \color{blue}{\downarrow} & \color{green}{\downarrow} & \color{red}{\downarrow} & \color{purple}{\downarrow} & \color{olive}{\downarrow} & \color{magenta}{\downarrow}\\
-\textbf{second derivative} & f''(x) = 2 & \frac{d^2y}{dx^2}=2 & y'' = 2 & \frac{d^2(u^2)}{du^2}=2 & \frac{d^2}{dz^2}v = 2 & \ddot{s} = 2 & D^2(f) = 2
-\end{array}
-$$
+| Function | Derivative | Second derivative |
+|:-------------:|:-------------:|:-------------:|
+| $f(x) = x^2$ | $f'(x) = 2x$ | $f''(x) = 2$ |
+| $y = x^2$ | $\dfrac{dy}{dx} = 2x$ | $\dfrac{d^2y}{dx^2} = 2$ |
+| $y = x^2$ | $y' = 2x$ | $y'' = 2$ |
+| $u^2$ | $\dfrac{d(u^2)}{du} = 2u$ | $\dfrac{d^2(u^2)}{du^2} = 2$ |
+| $v = z^2$ | $\dfrac{d}{dz}v = 2z$ | $\dfrac{d^2}{dz^2}v = 2$ |
+| $s = t^2$ | $\dot{s} = 2t$ | $\ddot{s} = 2$ |
+| $f(x) = x^2$ | $D(f) = 2x$ | $D^2(f) = 2$ |
 
 ::: {.se-quiz}
-If $s = t^3$, which of these is the second derivative written in the same notation as the $\color{olive}{\text{olive}}$ column?
+In the table, $s = t^2$ gives $\dot{s} = 2t$ and $\ddot{s} = 2$. Using the same notation, what is the second derivative of $s = t^3$?
 
 [$s'' = 6t$]{.se-option} [$\ddot{s} = 6t$]{.se-option data-correct="true"} [$\dot{s} = 3t^2$]{.se-option} [$D^2(s) = 6t$]{.se-option}
 
 ::: {.se-feedback}
 Dot notation: one dot for the first derivative, two dots for the second. The other options are also correct values, but written in different notations; $\dot{s} = 3t^2$ is the first derivative.
-:::
-:::
-
-::: {.se-box .se-precheck}
-::: {.se-prompt}
-which notation for differentiation did I use most at school or college? Which ones in the table are new to me?
-:::
-::: {.se-reveal data-label="Check"}
-If any are new, try rewriting $\frac{dy}{dx} = 2x$ from the table in each of the other notations.
 :::
 :::
 
@@ -410,19 +332,9 @@ If any are new, try rewriting $\frac{dy}{dx} = 2x$ from the table in each of the
 |:-----:|:----------|:----------------------|
 | $\Delta x$ | "delta x" | the change in $x$ |
 | $\delta x$ | "delta x" | the small change in $x$ |
-| $dx$ | "the differential" | the change in $x$ when it approaches zero |
-| $\partial x$ | "the partial differential" | the change in $x$ when it approaches zero |
+| $dx$ | "dee x" or "the differential" | a tiny change in $x$: think of $\Delta x$ shrunk down until it's infinitely small |
+| $\partial x$ | "partial x" or "del x" | used in partial derivatives such as $\frac{\partial f}{\partial x}$: how $f$ changes when only $x$ changes and every other variable stays fixed |
 | $d(x,y)$ | "distance between x and y" | the distance function (metric spaces and topology) |
-
-::: {.se-quiz}
-Which symbol means "the small change in $x$"?
-
-[$\Delta x$]{.se-option} [$\delta x$]{.se-option data-correct="true"} [$\partial x$]{.se-option} [$d(x,y)$]{.se-option}
-
-::: {.se-feedback}
-Lowercase delta, $\delta x$, is the small change. Uppercase delta, $\Delta x$, is the change in $x$. Both are said "delta x", so watch the letter carefully.
-:::
-:::
 
 ## Exponentials {.se-theme-purple}
 
@@ -442,43 +354,34 @@ $$
 e^{\frac{2x^2}{3 - x}} = \exp\left(\frac{2x^2}{3 - x}\right)
 $$
 
-::: {.se-quiz}
-In $2^5$, what is the 5 **not** called?
-
-[the power]{.se-option} [the exponent]{.se-option} [the index]{.se-option} [the base]{.se-option data-correct="true"}
-
-::: {.se-feedback}
-'Power', 'exponent' and 'index' all mean the same thing. The 2 is the base.
-:::
-:::
-
 ## Vectors {.se-theme-orange}
 
 There are so many different notations that can be used for vectors, it can be very confusing.
 
 Vectors are often written in lowercase, and vertices are often uppercase.
 
-You can use a single letter to show a vector, or split it into its components.
+You can use a single letter to show a vector,
 
 $$
-\begin{array}{lllll}
-\overrightarrow{OA} & = \mathbf{a} & = \underset{\sim}{a} & = \vec{a} & = \underline{a}\\
-= (a_1, a_2) & = (a_1 \ \ a_2) & = \begin{pmatrix} a_1 \\ a_2 \end{pmatrix} & = \begin{bmatrix} a_1 \\ a_2 \end{bmatrix} &\\
-= a_1 \mathbf{i} + a_2 \mathbf{j} & = a_1 \hat{i} + a_2 \hat{j} & & &
-\end{array}
+\overrightarrow{OA} = \mathbf{a} = \underset{\sim}{a} = \vec{a} = \underline{a}
+$$
+
+or split it into its components,
+
+$$
+\mathbf{a} = (a_1, a_2) = (a_1 \ \ a_2) = \begin{pmatrix} a_1 \\ a_2 \end{pmatrix} = \begin{bmatrix} a_1 \\ a_2 \end{bmatrix}
+$$
+
+$$
+\mathbf{a} = a_1 \mathbf{i} + a_2 \mathbf{j} = a_1 \hat{i} + a_2 \hat{j}
 $$
 
 $\hat{a}$ is usually reserved for the 'unit vector in the direction of $\vec{a}$'.
 
-::: {.se-box}
-**Watch out for pointy brackets** though, as they are not used to show something is a vector, but for an operation involving two vectors (the inner product).
+::: {.se-callout data-title="Watch out"}
+Pointy brackets are not used to show something is a vector, but for an operation involving two vectors (the inner product).
 
-$$
-\begin{array}{ll}
-\mathbf{a} = (a_1,a_2), \quad \mathbf{b} = (b_1,b_2) & \text{are vectors}\\
-\langle \mathbf{a}, \mathbf{b} \rangle & \text{is the inner product of the two vectors}
-\end{array}
-$$
+If $\mathbf{a} = (a_1, a_2)$ and $\mathbf{b} = (b_1, b_2)$ are vectors, then $\langle \mathbf{a}, \mathbf{b} \rangle$ is the inner product of the two vectors.
 :::
 
 ::: {.se-quiz}
@@ -518,7 +421,7 @@ $$
 \end{matrix}
 $$
 
-As a general rule matrices are written with uppercase letters, $A$, and elements of a matrix are denoted with lowercase $a$. Each element of the matrix can be written with a subscript, $a_{ij}$, that tells you where it is located:
+A matrix is usually named with an uppercase letter, such as $\mathbf{A}$. The numbers inside it are called its elements (or entries), and they are named with the matching lowercase letter. Each element has two subscripts: the first gives its row and the second gives its column, so $a_{ij}$ is the element in row $i$ and column $j$. The subscripts may be written with or without a comma, $a_{ij}$ or $a_{i,j}$.
 
 $$
 \mathbf{A} =
@@ -528,11 +431,7 @@ a_{2,1} & a_{2,2}
 \end{pmatrix}
 $$
 
-Curly brackets are not generally used for matrices, but because they are used for set notation you could write a matrix using curly brackets:
-
-$$
-\mathbf{A} = \{a_{ij}\}
-$$
+A whole matrix can also be described by its general element in brackets, $\mathbf{A} = (a_{ij})$ or $\mathbf{A} = [a_{ij}]$. You may occasionally see curly brackets, $\mathbf{A} = \{a_{ij}\}$, but be careful: curly brackets usually mean a set, and the order of a set doesn't matter, whereas the position of each element in a matrix does.
 
 ::: {.se-quiz}
 In the matrix $\mathbf{A}$ at the top of this section, what is $a_{2,3}$?
@@ -548,8 +447,8 @@ The first subscript is the row and the second is the column: row 2, column 3 giv
 
 Straight vertical lines are used for a property of the matrix, rather than the matrix itself.
 
-::: {.se-box}
-**Watch out:** some lecturers' handwriting makes it tricky to tell what style of line is intended! If in doubt, just ask for clarification.
+::: {.se-callout data-title="Watch out"}
+Some lecturers' handwriting makes it tricky to tell what style of line is intended! If in doubt, just ask for clarification.
 :::
 
 Single lines show the determinant of a matrix (telling you something about the scale factor when using the matrix to enlarge a vector).
@@ -646,73 +545,90 @@ The 30 students are a sample, so their average is the sample mean, $\bar{x}$. $\
 :::
 :::
 
-::: {.se-score}
+::: {.se-quiz}
+You roll a dice. How would you write "the probability that a 6 is rolled"?
+
+[$P(x = 6)$]{.se-option} [$P(X = 6)$]{.se-option data-correct="true"} [$X = 6$]{.se-option} [$x_6$]{.se-option}
+
+::: {.se-feedback}
+The random variable is named with an uppercase letter, $X$, so the probability is $P(X = 6)$. $X = 6$ on its own is the event, not its probability.
+:::
+:::
+
+::: {.se-quiz}
+You roll a dice three times. Which of these is the result of the **second** roll?
+
+[$x^2$]{.se-option} [$X_2$]{.se-option} [$x_2$]{.se-option data-correct="true"} [$P(X = 2)$]{.se-option}
+
+::: {.se-feedback}
+The results of the rolls are $x_1, x_2, x_3$, so the second is $x_2$. Watch out for $x^2$, which means $x$ squared.
+:::
+:::
+
+::: {.se-quiz}
+A website reports the standard deviation of the heights of **every** adult in the UK. Which symbol fits best?
+
+[$s$]{.se-option} [$\sigma$]{.se-option data-correct="true"} [$\bar{x}$]{.se-option} [$\rho$]{.se-option}
+
+::: {.se-feedback}
+Every adult in the UK is the whole population, so the population standard deviation, $\sigma$, fits. $s$ is the standard deviation of a sample.
+:::
 :::
 
 ## Dictionary {.se-theme-green}
-
-Test yourself: say what each symbol means, then click **Reveal** to check.
-
-::: {.se-dict-controls}
-:::
 
 ### General notation
 
 | Symbol | Meaning |
 |:-------:|:-----------------------|
-| $=$ | [equal to]{.se-flip} |
-| $\neq$ | [not equal to]{.se-flip} |
-| $\approx$ | [is approximately equal to]{.se-flip} |
-| $\infty$ | [infinity]{.se-flip} |
-| $\propto$ | [is proportional to]{.se-flip} |
-| $\therefore$ | [therefore]{.se-flip} |
-| $\because$ | [because]{.se-flip} |
-| $<$ | [less than]{.se-flip} |
-| $>$ | [greater than]{.se-flip} |
-| $\le$ | [less than or equal to]{.se-flip} |
-| $\ge$ | [greater than or equal to]{.se-flip} |
-| $\implies$ | [implies]{.se-flip} |
-| $:$ | [such that]{.se-flip} |
-| $\forall$ | [for all]{.se-flip} |
+| $=$ | equal to |
+| $\neq$ | not equal to |
+| $\approx$ | is approximately equal to |
+| $\infty$ | infinity |
+| $\propto$ | is proportional to |
+| [∴]{.se-sym} | therefore |
+| [∵]{.se-sym} | because |
+| $<$ | less than |
+| $>$ | greater than |
+| $\le$ | less than or equal to |
+| $\ge$ | greater than or equal to |
+| $\implies$ | implies |
+| $:$ | such that |
+| $\forall$ | for all |
 
 ### Set notation
 
 | Symbol | Meaning |
 |:-------:|:-----------------------|
-| $\in$ | [is an element of]{.se-flip} |
-| $\notin$ | [is not an element of]{.se-flip} |
-| $\subset$ | [is a subset of]{.se-flip} |
-| $\emptyset$ | [the empty set]{.se-flip} |
-| $A'$ | [the complement of $A$]{.se-flip} |
-| $\mathbb{N}$ | [the natural numbers]{.se-flip} |
-| $\mathbb{Z}$ | [the integers]{.se-flip} |
-| $\mathbb{R}$ | [the real numbers]{.se-flip} |
-| $\mathbb{Q}$ | [the rational numbers]{.se-flip} |
-| $\mathbb{C}$ | [the complex numbers]{.se-flip} |
-| $\cup$ | [union]{.se-flip} |
-| $\cap$ | [intersection]{.se-flip} |
+| $\in$ | is an element of |
+| $\notin$ | is not an element of |
+| $\subset$ | is a subset of |
+| $\emptyset$ | the empty set |
+| $A'$ | the complement of $A$ |
+| $\mathbb{N}$ | the natural numbers |
+| $\mathbb{Z}$ | the integers |
+| $\mathbb{R}$ | the real numbers |
+| $\mathbb{Q}$ | the rational numbers |
+| $\mathbb{C}$ | the complex numbers |
+| $\cup$ | union |
+| $\cap$ | intersection |
 
 ### Series notation
 
 | Symbol | Meaning |
 |:-------:|:-----------------------|
-| $\sum$ | [sum of]{.se-flip} |
-| $\sum_{i=1}^{n} a_i$ | [$a_1 + a_2 + \dots + a_n$]{.se-flip} |
-| $\prod$ | [product of]{.se-flip} |
-| $\prod_{i=1}^{n} a_i$ | [$a_1 \times a_2 \times \dots \times a_n$]{.se-flip} |
-| $n!$ | [$n$ factorial $= n \times (n-1) \times \dots \times 2 \times 1$]{.se-flip} |
-| $\binom{n}{k}$ | [$n$ choose $k$ (the binomial coefficient)]{.se-flip} |
-| ${}^{n}C_{k}$ | [$n$ choose $k$ (the binomial coefficient)]{.se-flip} |
+| $\sum$ | sum of |
+| $\sum_{i=1}^{n} a_i$ | $a_1 + a_2 + \dots + a_n$ |
+| $\prod$ | product of |
+| $\prod_{i=1}^{n} a_i$ | $a_1 \times a_2 \times \dots \times a_n$ |
+| $n!$ | $n$ factorial $= n \times (n-1) \times \dots \times 2 \times 1$ |
+| $\binom{n}{k}$ | $n$ choose $k$ (the binomial coefficient) |
+| ${}^{n}C_{k}$ | $n$ choose $k$ (the binomial coefficient) |
 
 ### Function notation
 
 | Symbol | Meaning |
 |:-------:|:-----------------------|
-| $f: x \mapsto y$ | [the function $f$ maps $x$ onto $y$]{.se-flip} |
-| $f^{-1}$ | [the inverse of $f$]{.se-flip} |
-| $\displaystyle\lim_{x \to \infty} f(x)$ | [the limit of $f(x)$ as $x$ tends to infinity]{.se-flip} |
-
-::: {.se-box}
-**Remember:** choice of notation is often cultural or simply personal preference. If your lecturer uses something you don't recognise, it is okay to ask.
-:::
-
+| $f: x \mapsto y$ | the function $f$ maps $x$ onto $y$ |
+| $f^{-1}$ | the inverse of $f$ |
+| $\displaystyle\lim_{x \to \infty} f(x)$ | the limit of $f(x)$ as $x$ tends to infinity |
