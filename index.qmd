@@ -213,7 +213,7 @@ format:
         </script>
 ---
 
-## Introduction {.se-theme-slate .se-open}
+## Introduction {.se-theme-slate}
 
 There are lots of different ways of writing maths that are equivalent and can be used interchangeably. This can be confusing if your lecturer uses a different notation than you are used to.
 
